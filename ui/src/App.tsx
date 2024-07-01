@@ -1,26 +1,24 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { ApolloProvider, InMemoryCache, ApolloClient } from '@apollo/client';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import LandingPage from './pages/LandingPage';
+import Loading from './components/Loading';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const client = new ApolloClient({
+    uri: 'http://localhost:4000/graphql',
+    cache: new InMemoryCache(), // In-memory cache for Apollo Client
+});
+
+const App: React.FC = () => (
+    <ApolloProvider client={client}>
+        <Router>
+            <React.Suspense fallback={<Loading />}>
+                <Switch>
+                    <Route path="/" component={LandingPage} exact />
+                </Switch>
+            </React.Suspense>
+        </Router>
+    </ApolloProvider>
+);
 
 export default App;
