@@ -1,36 +1,36 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import RegisterForm from '../components/RegisterForm';
+import LoginForm from '../components/LoginForm';
 import { MockedProvider } from '@apollo/client/testing';
-import { REGISTER_USER } from '../graphql/mutations';
+import { LOGIN_USER } from '../graphql/mutations';
 
 const mocks = [
     {
         request: {
-            query: REGISTER_USER,
+            query: LOGIN_USER,
             variables: { username: 'testuser', password: 'password' },
         },
         result: {
             data: {
-                registerUser: { id: '1', username: 'testuser' },
+                loginUser: { token: 'testtoken' },
             },
         },
     },
 ];
 
-describe('RegisterForm Negative Tests', () => {
+describe('LoginForm Negative Tests', () => {
     test('shows error message on empty username', async () => {
         render(
             <MockedProvider mocks={mocks} addTypename={false}>
-                <RegisterForm />
+                <LoginForm />
             </MockedProvider>
         );
 
         fireEvent.change(screen.getByLabelText(/username/i), { target: { value: '' } });
         fireEvent.change(screen.getByLabelText(/password/i), { target: { value: 'password' } });
 
-        fireEvent.click(screen.getByText(/register/i));
+        fireEvent.click(screen.getByText(/login/i));
 
         await waitFor(() => {
             expect(screen.getByText(/error/i)).toBeInTheDocument();
@@ -40,14 +40,14 @@ describe('RegisterForm Negative Tests', () => {
     test('shows error message on empty password', async () => {
         render(
             <MockedProvider mocks={mocks} addTypename={false}>
-                <RegisterForm />
+                <LoginForm />
             </MockedProvider>
         );
 
         fireEvent.change(screen.getByLabelText(/username/i), { target: { value: 'testuser' } });
         fireEvent.change(screen.getByLabelText(/password/i), { target: { value: '' } });
 
-        fireEvent.click(screen.getByText(/register/i));
+        fireEvent.click(screen.getByText(/login/i));
 
         await waitFor(() => {
             expect(screen.getByText(/error/i)).toBeInTheDocument();
@@ -58,7 +58,7 @@ describe('RegisterForm Negative Tests', () => {
         const errorMocks = [
             {
                 request: {
-                    query: REGISTER_USER,
+                    query: LOGIN_USER,
                     variables: { username: 'testuser', password: 'password' },
                 },
                 error: new Error('Server error'),
@@ -67,17 +67,46 @@ describe('RegisterForm Negative Tests', () => {
 
         render(
             <MockedProvider mocks={errorMocks} addTypename={false}>
-                <RegisterForm />
+                <LoginForm />
             </MockedProvider>
         );
 
         fireEvent.change(screen.getByLabelText(/username/i), { target: { value: 'testuser' } });
         fireEvent.change(screen.getByLabelText(/password/i), { target: { value: 'password' } });
 
-        fireEvent.click(screen.getByText(/register/i));
+        fireEvent.click(screen.getByText(/login/i));
 
         await waitFor(() => {
             expect(screen.getByText(/server error/i)).toBeInTheDocument();
+        });
+    });
+
+    test('shows error message on incorrect credentials', async () => {
+        const errorMocks = [
+            {
+                request: {
+                    query: LOGIN_USER,
+                    variables: { username: 'wronguser', password: 'wrongpassword' },
+                },
+                result: {
+                    errors: [{ message: 'Invalid credentials' }],
+                },
+            },
+        ];
+
+        render(
+            <MockedProvider mocks={errorMocks} addTypename={false}>
+                <LoginForm />
+            </MockedProvider>
+        );
+
+        fireEvent.change(screen.getByLabelText(/username/i), { target: { value: 'wronguser' } });
+        fireEvent.change(screen.getByLabelText(/password/i), { target: { value: 'wrongpassword' } });
+
+        fireEvent.click(screen.getByText(/login/i));
+
+        await waitFor(() => {
+            expect(screen.getByText(/invalid credentials/i)).toBeInTheDocument();
         });
     });
 });

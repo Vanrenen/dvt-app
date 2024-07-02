@@ -1,34 +1,34 @@
 import { useState } from 'react';
-import { useMutation, gql } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { LOGIN_USER } from '../graphql/mutations';
 
-interface LoginData {
-    username: string;
-    password: string;
-}
-
 const useLogin = () => {
-    const [loginUser, { data, loading, error }] = useMutation(LOGIN_USER);
+    const [formData, setFormData] = useState({ username: '', password: '' });
+    const [formError, setFormError] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
+    const [loading, setLoading] = useState(false);
 
-    const [formData, setFormData] = useState<LoginData>({ username: '', password: '' });
-    const [formError, setFormError] = useState<string | null>(null);
+    const [loginUser] = useMutation(LOGIN_USER);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+        setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setLoading(true);
         try {
-            setFormError(null);
-            await loginUser({ variables: formData });
-        } catch (err) {
-            setFormError(err.message);
+            const { data } = await loginUser({ variables: formData });
+            setSuccessMessage('Login successful!');
+            setFormData({ username: '', password: '' });
+        } catch (error: any) {
+            setFormError(error.message);
+        } finally {
+            setLoading(false);
         }
     };
 
-    return { handleChange, handleSubmit, data, loading, error, formError };
+    return { formData, formError, handleChange, handleSubmit, loading, successMessage };
 };
 
 export default useLogin;

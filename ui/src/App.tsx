@@ -1,24 +1,23 @@
 import React from 'react';
-import { ApolloProvider, InMemoryCache, ApolloClient } from '@apollo/client';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import LandingPage from './pages/LandingPage';
-import Loading from './components/Loading';
+import { ThemeProvider as StyledThemeProvider } from 'styled-components';
+import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import theme from './theme';
+import RegisterForm from './components/RegisterForm';
+import LoginForm from './components/LoginForm';
 
-const client = new ApolloClient({
-    uri: 'http://localhost:4000/graphql',
-    cache: new InMemoryCache(), // In-memory cache for Apollo Client
-});
-
-const App: React.FC = () => (
-    <ApolloProvider client={client}>
-        <Router>
-            <React.Suspense fallback={<Loading />}>
-                <Switch>
-                    <Route path="/" component={LandingPage} exact />
-                </Switch>
-            </React.Suspense>
-        </Router>
-    </ApolloProvider>
-);
+const App: React.FC = () => {
+    return (
+        <StyledThemeProvider theme={theme}>
+            <MuiThemeProvider theme={theme}>
+                <CssBaseline />
+                <div style={{ padding: '2rem' }}>
+                    <RegisterForm />
+                    <LoginForm />
+                </div>
+            </MuiThemeProvider>
+        </StyledThemeProvider>
+    );
+};
 
 export default App;
