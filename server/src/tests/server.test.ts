@@ -1,7 +1,7 @@
 import request from 'supertest';
 import { ApolloServer, gql } from 'apollo-server-express';
-import { typeDefs } from '../schema/typeDefs';
-import { resolvers } from '../resolvers/userResolver';
+import typeDefs from '../schema/typeDefs';
+import resolvers from '../resolvers/userResolver';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import config from '../config';
@@ -19,6 +19,8 @@ let app: any;
 
 beforeAll(async () => {
     app = await server.start();
+    if (typeof config.mongoURI !== 'string')
+      return;
     await mongoose.connect(config.mongoURI, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
