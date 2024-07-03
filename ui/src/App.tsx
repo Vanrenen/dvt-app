@@ -7,17 +7,17 @@ import RegisterForm from './components/RegisterForm';
 import LoginForm from './components/LoginForm';
 
 const App: React.FC = () => {
-    return (
-        <StyledThemeProvider theme={theme}>
-            <MuiThemeProvider theme={theme}>
-                <CssBaseline />
-                <div style={{ padding: '2rem' }}>
-                    <RegisterForm />
-                    <LoginForm />
-                </div>
-            </MuiThemeProvider>
-        </StyledThemeProvider>
-    );
+  return (
+    <StyledThemeProvider theme={theme}>
+      <MuiThemeProvider theme={theme}>
+        <CssBaseline />
+        <div style={{ padding: '2rem' }}>
+          <RegisterForm />
+          <LoginForm />
+        </div>
+      </MuiThemeProvider>
+    </StyledThemeProvider>
+  );
 };
 
 export default App;

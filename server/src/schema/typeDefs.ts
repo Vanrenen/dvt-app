@@ -1,23 +1,23 @@
 import { gql } from 'apollo-server-express';
 
 const typeDefs = gql`
-    type User {
-        id: ID!
-        username: String!
-    }
+  type User {
+    id: ID!
+    username: String!
+  }
 
-    type Token {
-        token: String!
-    }
+  type Token {
+    token: String!
+  }
 
-    type Query {
-        users: [User!]
-    }
+  type Query {
+    users: [User!]
+  }
 
-    type Mutation {
-        registerUser(username: String!, password: String!): User
-        loginUser(username: String!, password: String!): Token
-    }
+  type Mutation {
+    registerUser(username: String!, password: String!): User
+    loginUser(username: String!, password: String!): Token
+  }
 `;
 
 export default typeDefs;
