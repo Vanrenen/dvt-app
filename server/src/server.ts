@@ -1,29 +1,34 @@
-import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
-import typeDefs from './schema/typeDefs';
-import resolvers from './resolvers/userResolver';
+import express from 'express';
 import mongoose from 'mongoose';
-import config from './config';
+import typeDefs from './schema/typeDefs';
+import { resolvers } from './resolvers/userResolver';
+import { config } from './config';
 
-const app = express();
+const startServer = async () => {
+    const app = express();
 
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-  context: () => ({ redisClient: { get: jest.fn(), set: jest.fn(), del: jest.fn() } })
-});
+    const server = new ApolloServer({
+        typeDefs,
+        resolvers,
+        context: ({ req }) => {
+            const token = req.headers.authorization || '';
+            return { token };
+        },
+    });
 
-mongoose.connect(config.mongoURI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-}).then(() => {
-  console.log('Connected to MongoDB');
-  return server.start();
-}).then(() => {
-  server.applyMiddleware({ app });
-  app.listen({ port: config.port }, () =>
-    console.log(`Server ready at http://localhost:${config.port}${server.graphqlPath}`)
-  );
-}).catch(err => {
-  console.error('Error connecting to MongoDB', err);
+    server.applyMiddleware({ app });
+
+    await mongoose.connect(config.mongodbUri, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+    });
+
+    app.listen({ port: 4000 }, () => {
+        console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`);
+    });
+};
+
+startServer().catch((err) => {
+    console.error('Failed to start server:', err);
 });

@@ -1,34 +1,27 @@
-import { useState } from 'react';
-import { useMutation } from '@apollo/client';
-import { LOGIN_USER } from '../graphql/mutations';
+import { useMutation, useQueryClient } from 'react-query';
+import axios, { AxiosError } from 'axios';
 
-const useLogin = () => {
-  const [formData, setFormData] = useState({ username: '', password: '' });
-  const [formError, setFormError] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
-  const [loading, setLoading] = useState(false);
+interface LoginData {
+    username: string;
+    password: string;
+}
 
-  const [loginUser] = useMutation(LOGIN_USER);
+interface LoginError {
+    message: string;
+}
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+export const useLogin = () => {
+    const queryClient = useQueryClient();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      const { data } = await loginUser({ variables: formData });
-      setSuccessMessage('Login successful!');
-      setFormData({ username: '', password: '' });
-    } catch (error: any) {
-      setFormError(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return { formData, formError, handleChange, handleSubmit, loading, successMessage };
+    return useMutation<unknown, AxiosError<LoginError>, LoginData>(
+        async (user) => {
+            const response = await axios.post('/api/login', user);
+            return response.data;
+        },
+        {
+            onSuccess: () => {
+                queryClient.invalidateQueries('currentUser');
+            },
+        }
+    );
 };
-
-export default useLogin;
