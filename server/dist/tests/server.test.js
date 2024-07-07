@@ -1,38 +1,32 @@
 import request from 'supertest';
 import { ApolloServer, gql } from 'apollo-server-express';
 import typeDefs from '../schema/typeDefs';
-import { resolvers } from '../resolvers/userResolver';
-import mongoose, {ConnectOptions} from 'mongoose';
+import resolvers from '../resolvers/userResolver';
+import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import { config } from '../config';
-
+import config from '../config';
 // Load the environment variables for testing
 dotenv.config({ path: '.env.test' });
-
 const server = new ApolloServer({
     typeDefs,
     resolvers,
     context: () => ({ redisClient: { get: jest.fn(), set: jest.fn(), del: jest.fn() } })
 });
-
-let app: any;
-
+let app;
 beforeAll(async () => {
     app = await server.start();
-    if (typeof config.mongodbUri !== 'string')
-      return;
-    await mongoose.connect(config.mongodbUri, {
+    if (typeof config.mongoURI !== 'string')
+        return;
+    await mongoose.connect(config.mongoURI, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
-    } as ConnectOptions);
+    });
 });
-
 afterAll(async () => {
     await mongoose.connection.close();
     await server.stop();
 });
-
-const REGISTER_USER = gql`
+const REGISTER_USER = gql `
   mutation RegisterUser($username: String!, $password: String!) {
     registerUser(username: $username, password: $password) {
       id
@@ -40,81 +34,71 @@ const REGISTER_USER = gql`
     }
   }
 `;
-
-const LOGIN_USER = gql`
+const LOGIN_USER = gql `
   mutation LoginUser($username: String!, $password: String!) {
     loginUser(username: $username, password: $password) {
       token
     }
   }
 `;
-
 test('Register a new user', async () => {
     const response = await request(app)
-      .post('/graphql')
-      .send({
+        .post('/graphql')
+        .send({
         query: REGISTER_USER,
         variables: {
-          username: 'testuser',
-          password: 'password',
+            username: 'testuser',
+            password: 'password',
         },
-      });
-
+    });
     expect(response.body.data.registerUser.username).toBe('testuser');
 });
-
 test('Login a user', async () => {
     const response = await request(app)
-      .post('/graphql')
-      .send({
+        .post('/graphql')
+        .send({
         query: LOGIN_USER,
         variables: {
-          username: 'testuser',
-          password: 'password',
+            username: 'testuser',
+            password: 'password',
         },
-      });
-
+    });
     expect(response.body.data.loginUser.token).toBeDefined();
 });
-
 test('Fail to register a user with an existing username', async () => {
     // First registration should succeed
     await request(app)
-      .post('/graphql')
-      .send({
+        .post('/graphql')
+        .send({
         query: REGISTER_USER,
         variables: {
-          username: 'duplicateuser',
-          password: 'password',
+            username: 'duplicateuser',
+            password: 'password',
         },
-      });
-
+    });
     // Second registration with the same username should fail
     const response = await request(app)
-      .post('/graphql')
-      .send({
+        .post('/graphql')
+        .send({
         query: REGISTER_USER,
         variables: {
-          username: 'duplicateuser',
-          password: 'password',
+            username: 'duplicateuser',
+            password: 'password',
         },
-      });
-
+    });
     expect(response.body.errors).toBeDefined();
     expect(response.body.errors[0].message).toBe('Username already exists');
 });
-
 test('Fail to login with wrong credentials', async () => {
     const response = await request(app)
-      .post('/graphql')
-      .send({
+        .post('/graphql')
+        .send({
         query: LOGIN_USER,
         variables: {
-          username: 'nonexistentuser',
-          password: 'wrongpassword',
+            username: 'nonexistentuser',
+            password: 'wrongpassword',
         },
-      });
-
+    });
     expect(response.body.errors).toBeDefined();
     expect(response.body.errors[0].message).toBe('Invalid credentials');
 });

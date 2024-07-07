@@ -1,39 +1,38 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import React, { FC } from 'react';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import RegisterForm from './components/RegisterForm';
 import LoginForm from './components/LoginForm';
 import WelcomePage from './components/WelcomePage';
-import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { AuthProvider, useAuth } from './context/AuthContext';
+import { Theme } from '@mui/material';
 
-const App: React.FC = () => {
-    return (
-        <AuthProvider>
-            <Router>
-                <Switch>
-                    <Route path="/register" component={RegisterForm} />
-                    <Route path="/login" component={LoginForm} />
-                    <PrivateRoute path="/welcome" component={WelcomePage} />
-                    <Redirect from="/" to="/login" />
-                </Switch>
-            </Router>
-        </AuthProvider>
-    );
+declare module '@mui/styles/defaultTheme' {
+  interface DefaultTheme extends Theme { }
 };
 
-const PrivateRoute: React.FC<any> = ({ component: Component, ...rest }) => {
-    const { isAuthenticated } = useAuth();
-    return (
-        <Route
-            {...rest}
-            render={(props) =>
-                isAuthenticated ? (
-                    <Component {...props} />
-                ) : (
-                    <Redirect to="/login" />
-                )
-            }
-        />
-    );
+const App: FC = () => {
+  return (
+    <AuthProvider>
+      <Router>
+        <Routes>
+          <Route path="/register" element={<RegisterForm />} />
+          <Route path="/login" element={<LoginForm />} />
+          <Route path="/" element={<LoginForm />} />
+          <Route path="*" element={<PrivateRoute />} />
+        </Routes>
+      </Router>
+    </AuthProvider>
+  );
+};
+
+const PrivateRoute: FC = () => {
+  const { isAuthenticated } = useAuth();
+  // TODO: See if we can compensate for the the lack of replace when redirecting non existant routes.
+  return (
+    <Routes>
+      <Route path='*' element={isAuthenticated ? <WelcomePage/> : <Navigate to="/login" replace />} />
+    </Routes>
+  );
 };
 
 export default App;

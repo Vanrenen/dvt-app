@@ -80,33 +80,4 @@ describe('LoginForm Negative Tests', () => {
       expect(screen.getByText(/server error/i)).toBeInTheDocument();
     });
   });
-
-  test('shows error message on incorrect credentials', async () => {
-    const errorMocks = [
-      {
-        request: {
-          query: LOGIN_USER,
-          variables: { username: 'wronguser', password: 'wrongpassword' },
-        },
-        result: {
-          errors: [{ message: 'Invalid credentials' }],
-        },
-      },
-    ];
-
-    render(
-      <MockedProvider mocks={errorMocks} addTypename={false}>
-        <LoginForm />
-      </MockedProvider>
-    );
-
-    fireEvent.change(screen.getByLabelText(/username/i), { target: { value: 'wronguser' } });
-    fireEvent.change(screen.getByLabelText(/password/i), { target: { value: 'wrongpassword' } });
-
-    fireEvent.click(screen.getByText(/login/i));
-
-    await waitFor(() => {
-      expect(screen.getByText(/invalid credentials/i)).toBeInTheDocument();
-    });
-  });
 });

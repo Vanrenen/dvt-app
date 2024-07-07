@@ -1,15 +1,15 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Typography, Button } from '@mui/material';
-import { useAuth } from '../contexts/AuthContext';
-import { useHistory } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
-const WelcomePage: React.FC = () => {
+const WelcomePage: FC = () => {
     const { logout } = useAuth();
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const handleLogout = () => {
         logout();
-        history.push('/login');
+        navigate('/login');
     };
 
     return (
