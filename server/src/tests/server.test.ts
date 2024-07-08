@@ -1,10 +1,10 @@
 import request from 'supertest';
 import { ApolloServer, gql } from 'apollo-server-express';
-import typeDefs from '../schema/typeDefs';
-import { resolvers } from '../resolvers/userResolver';
+import { typeDefs } from '../schema/typeDefs.js';
+import { resolvers } from '../resolvers/userResolver.js';
 import mongoose, {ConnectOptions} from 'mongoose';
 import dotenv from 'dotenv';
-import { config } from '../config';
+import { config } from '../config.js';
 
 // Load the environment variables for testing
 dotenv.config({ path: '.env.test' });

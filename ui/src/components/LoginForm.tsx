@@ -1,46 +1,32 @@
-import React, { useState, FC, ChangeEvent, useEffect } from 'react';
+import React, { useState } from 'react';
 import { TextField, Button, CircularProgress, Typography } from '@mui/material';
-import { useLogin } from '../hooks/useLogin';
-import FormContainer from './FormContainer';
 import { useAuth } from '../context/AuthContext';
+import FormContainer from './FormContainer';
 import { useNavigate } from 'react-router-dom';
 
-const LoginForm: FC = () => {
-  const { mutate, isLoading, error } = useLogin();
+const LoginForm: React.FC = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ username: '', password: '' });
-  const [formError, setFormError] = useState<string | null>(null);
-  const { isAuthenticated } = useAuth();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate('/welcome');
-    }
-  }, [isAuthenticated, navigate]);
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = () => {
-    if (!formData.username || !formData.password) {
-      setFormError('Username and password are required');
-      return;
+  const handleSubmit = async () => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      await login(formData.username, formData.password);
+      navigate('/welcome');
+    } catch (err) {
+      setError('Failed to login. Please try again.');
+    } finally {
+      setLoading(false);
     }
-
-    setFormError(null);
-
-    mutate(formData, {
-      onSuccess: (data: any) => {
-        login(data.token);
-        navigate('/welcome');
-      },
-      onError: (err: any) => {
-        console.error('Login error:', err);
-        setFormError('Failed to login. Please try again.');
-      }
-    });
   };
 
   return (
@@ -67,41 +53,20 @@ const LoginForm: FC = () => {
         fullWidth
         required
       />
-      {formError && (
+      {error && (
         <Typography variant="body1" color="error" gutterBottom>
-          {formError}
+          {error}
         </Typography>
       )}
-      <Typography gutterBottom>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleSubmit}
-          disabled={isLoading}
-          fullWidth
-        >
-          {isLoading ? <CircularProgress size={24} /> : 'Login'}
-        </Button>
-      </Typography>
-      <Typography variant='body1'>
-        {'Don\'t have an account yet?'}
-      </Typography>
       <Button
         variant="contained"
         color="primary"
-        onClick={() => {
-          navigate('/register')
-        }}
-        disabled={isLoading}
+        onClick={handleSubmit}
+        disabled={loading}
         fullWidth
       >
-        {isLoading ? <CircularProgress size={24} /> : 'Register'}
+        {loading ? <CircularProgress size={24} /> : 'Login'}
       </Button>
-      {error && (
-        <Typography variant="body1" color="error" gutterBottom>
-          Error: {error.message}
-        </Typography>
-      )}
     </FormContainer>
   );
 };

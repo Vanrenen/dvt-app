@@ -15,7 +15,8 @@ export const useLogin = () => {
 
   return useMutation<unknown, AxiosError<LoginError>, LoginData>(
     async (user: any) => {
-      const response = await axios.post('http://192.168.31.237:4000/graphql', user);
+      console.log(user);
+      const response = await axios.post('http://localhost:4000/graphql/api/loginUser', user);
       return response.data;
     },
     {

@@ -1,47 +1,52 @@
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
-import mongoose, {ConnectOptions} from 'mongoose';
+import mongoose, { ConnectOptions } from 'mongoose';
 import dotenv from 'dotenv';
-import typeDefs from './schema/typeDefs';
-import { resolvers } from './resolvers/userResolver';
+import { typeDefs } from './schema/typeDefs.js';
+import { resolvers } from './resolvers/userResolver.js';
 import { createClient } from 'redis';
-import { startStandaloneServer } from '@apollo/server/standalone';
-import { BaseContext } from '@apollo/server';
+import {
+    ApolloServerPluginLandingPageProductionDefault,
+    ApolloServerPluginLandingPageLocalDefault
+   } from 'apollo-server-core';
 
 dotenv.config();
 
 // Initialize Redis client
-const redisClient = createClient({
-  url: process.env.REDIS_URL || 'redis://localhost:6379'
-});
+// const redisClient = createClient({
+//     url: process.env.REDIS_URL || 'redis://localhost:6379'
+// });
 
-redisClient.on('error', (err) => console.log('Redis Client Error', err));
+// redisClient.on('error', (err) => console.log('Redis Client Error', err));
 
 const startServer = async () => {
-  const app = express();
-  const server = new ApolloServer({
-    typeDefs,
-    resolvers,
-  });
+    const app = express();
+    const server = new ApolloServer({ 
+        typeDefs, 
+        resolvers,
+        plugins: [
+            process.env.NODE_ENV === "production"
+              ? ApolloServerPluginLandingPageProductionDefault({
+                  embed: true,
+                  graphRef: "plaid-gufzoj@current"
+                })
+              : ApolloServerPluginLandingPageLocalDefault({ embed: true })
+         ]
+    });
 
-  const { url } = await startStandaloneServer<BaseContext>(server, {
-    listen: { port: 4000 },
-  });
+    await server.start();
+    server.applyMiddleware({ app });
 
-  server.applyMiddleware({ app });
+    await mongoose.connect(process.env.MONGO_URI!, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+    } as ConnectOptions);
 
-  await mongoose.connect(process.env.MONGO_URI!, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  } as ConnectOptions);
+    // await redisClient.connect();
 
-  await redisClient.connect();
-
-  console.log(`server ready at: ${url}`);
-
-  // app.listen({ port: 4000 }, () =>
-  //   console.log(`Server ready at http://localhost:4000${server.graphqlPath}`)
-  // );
+    app.listen({ port: 4000 }, () =>
+        console.log(`Server ready at http://localhost:4000${server.graphqlPath}`)
+    );
 };
 
 startServer();

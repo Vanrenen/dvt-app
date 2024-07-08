@@ -1,21 +1,21 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    // "target": "ES2020",
+    "outDir": "dist",
     "allowJs": true,
+    // "checkJs": true,
     "skipLibCheck": true,
-    "esModuleInterop": true,
+    // "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx"
+    // "strict": true,
+    // "forceConsistentCasingInFileNames": true,
+    // "noFallthroughCasesInSwitch": true,
+    "module": "ES2020",
+    "moduleResolution": "Node10",
+    // "sourceMap": true,
+    // "resolveJsonModule": true,
+    // "isolatedModules": true,
+    // "explainFiles": true
   },
-  "include": [
-    "src"
-, "jest.config.js", "jest.setup.js"  ]
+  "include": ["src"]
 }

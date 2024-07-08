@@ -1,9 +1,9 @@
 import { ApolloServer } from 'apollo-server-express';
 import express from 'express';
 import mongoose, { ConnectOptions } from 'mongoose';
-import typeDefs from './schema/typeDefs';
-import { resolvers } from './resolvers/userResolver';
-import { config } from './config';
+import { typeDefs } from './schema/typeDefs.js';
+import { resolvers } from './resolvers/userResolver.js';
+import { config } from './config.js';
 
 const startServer = async () => {
     const app = express();

@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { UserInputError } from 'apollo-server-express';
-import User from '../models/User';
+import User from '../models/User.js';
 
 export const resolvers = {
   Query: {
