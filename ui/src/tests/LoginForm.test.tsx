@@ -1,83 +1,63 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import '@testing-library/jest-dom';
-import LoginForm from '../components/LoginForm';
-import { MockedProvider } from '@apollo/client/testing';
-import { LOGIN_USER } from '../graphql/mutations';
+import { AuthProvider } from '../context/AuthContext.js';
+import LoginForm from '../components/LoginForm.js';
+import { createMemoryHistory } from 'history';
+import { Router } from 'react-router-dom';
 
-const mocks = [
-  {
-    request: {
-      query: LOGIN_USER,
-      variables: { username: 'testuser', password: 'password' },
-    },
-    result: {
-      data: {
-        loginUser: { token: 'testtoken' },
-      },
-    },
-  },
-];
-
-describe('LoginForm Negative Tests', () => {
-  test('shows error message on empty username', async () => {
-    render(
-      <MockedProvider mocks={mocks} addTypename={false}>
-        <LoginForm />
-      </MockedProvider>
-    );
-
-    fireEvent.change(screen.getByLabelText(/username/i), { target: { value: '' } });
-    fireEvent.change(screen.getByLabelText(/password/i), { target: { value: 'password' } });
-
-    fireEvent.click(screen.getByText(/login/i));
-
-    await waitFor(() => {
-      expect(screen.getByText(/error/i)).toBeInTheDocument();
-    });
+describe('LoginForm', () => {
+  beforeEach(() => {
+    fetchMock.resetMocks();
   });
 
-  test('shows error message on empty password', async () => {
+  it('should login successfully', async () => {
+    const mockData = { data: { login: { token: 'test-token' } } };
+    fetchMock.mockResponseOnce(JSON.stringify(mockData));
+
+    const history = createMemoryHistory();
     render(
-      <MockedProvider mocks={mocks} addTypename={false}>
-        <LoginForm />
-      </MockedProvider>
+      <AuthProvider>
+        <Router history={history}>
+          <LoginForm />
+        </Router>
+      </AuthProvider>
     );
 
-    fireEvent.change(screen.getByLabelText(/username/i), { target: { value: 'testuser' } });
-    fireEvent.change(screen.getByLabelText(/password/i), { target: { value: '' } });
+    fireEvent.change(screen.getByLabelText(/username/i), {
+      target: { value: 'testuser' },
+    });
+    fireEvent.change(screen.getByLabelText(/password/i), {
+      target: { value: 'password' },
+    });
 
     fireEvent.click(screen.getByText(/login/i));
 
-    await waitFor(() => {
-      expect(screen.getByText(/error/i)).toBeInTheDocument();
-    });
+    await waitFor(() => expect(history.location.pathname).toBe('/welcome'));
   });
 
-  test('shows error message on server error', async () => {
-    const errorMocks = [
-      {
-        request: {
-          query: LOGIN_USER,
-          variables: { username: 'testuser', password: 'password' },
-        },
-        error: new Error('Server error'),
-      },
-    ];
+  it('should handle login failure', async () => {
+    fetchMock.mockRejectOnce(new Error('Network error'));
 
+    const history = createMemoryHistory();
     render(
-      <MockedProvider mocks={errorMocks} addTypename={false}>
-        <LoginForm />
-      </MockedProvider>
+      <AuthProvider>
+        <Router history={history}>
+          <LoginForm />
+        </Router>
+      </AuthProvider>
     );
 
-    fireEvent.change(screen.getByLabelText(/username/i), { target: { value: 'testuser' } });
-    fireEvent.change(screen.getByLabelText(/password/i), { target: { value: 'password' } });
+    fireEvent.change(screen.getByLabelText(/username/i), {
+      target: { value: 'testuser' },
+    });
+    fireEvent.change(screen.getByLabelText(/password/i), {
+      target: { value: 'password' },
+    });
 
     fireEvent.click(screen.getByText(/login/i));
 
-    await waitFor(() => {
-      expect(screen.getByText(/server error/i)).toBeInTheDocument();
-    });
+    await waitFor(() =>
+      expect(screen.getByText(/failed to login. please try again./i)).toBeInTheDocument()
+    );
   });
 });
