@@ -1,8 +1,9 @@
 import { FC, useState, useEffect, ChangeEvent } from 'react';
-import { TextField, Button, CircularProgress, Typography } from '@mui/material';
+import { TextField, Button, Typography } from '@mui/material';
 import { useAuth } from '../context/AuthContext';
 import FormContainer from './FormContainer';
 import { useNavigate } from 'react-router-dom';
+import Loading from './Loading';
 
 const RegisterForm: FC = () => {
   const { register, isAuthenticated, error, loading } = useAuth();
@@ -60,7 +61,7 @@ const RegisterForm: FC = () => {
           disabled={loading}
           fullWidth
         >
-          {loading ? <CircularProgress size={24} /> : 'Register'}
+          {loading ? <Loading /> : 'Register'}
         </Button>
       </Typography>
       <Button
@@ -70,7 +71,7 @@ const RegisterForm: FC = () => {
           disabled={loading}
           fullWidth
         >
-          {loading ? <CircularProgress size={24} /> : 'Login'}
+          {loading ? <Loading /> : 'Login'}
         </Button>
     </FormContainer>
   );
