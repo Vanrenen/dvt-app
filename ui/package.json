@@ -36,11 +36,6 @@
       "last 1 safari version"
     ]
   },
-  "react-dotenv": {
-    "whitelist": [
-      "MONGO_URI"
-    ]
-  },
   "dependencies": {
     "@emotion/react": "^11.7.0",
     "@emotion/styled": "^11.6.0",
@@ -49,7 +44,6 @@
     "@types/jest": "^27.5.2",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
-    "dotenv": "^16.4.5",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-router-dom": "^6.24.1",
