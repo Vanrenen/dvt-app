@@ -42,7 +42,6 @@ export const resolvers = {
       }
     },
     loginUser: async (_: any, { username, password }: any) => {
-      console.log('DO WE GET HERE');
       try {
         const user = await User.findOne({ username });
         if (!user) {

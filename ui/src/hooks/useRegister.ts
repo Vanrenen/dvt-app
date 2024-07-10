@@ -1,28 +1,39 @@
-import { useMutation } from 'react-query';
-import axios, { AxiosError } from 'axios';
+import { useCallback } from 'react';
+import useGraphQL from './useGraphql';
 
-interface RegisterData {
-  username: string;
-  password: string;
-}
-
-interface RegisterError {
-  message: string;
-}
-
-let axiosConfig = {
-  headers: {
-      'Content-Type': 'application/json',
-      "Access-Control-Allow-Origin": "*",
-  }
-};
-
-export const useRegister = () => {
-  return useMutation<unknown, AxiosError<RegisterError>, RegisterData>(
-    async (newUser: RegisterData) => {
-      console.log(newUser);
-      const response = await axios.post('http://localhost:4000/graphql/api/register', newUser, axiosConfig);
-      return response.data;
+interface UseRegisterResult {
+  registerLoading: boolean;
+  registerError: string | null;
+  register: (username: string, password: string) => Promise<string | null>;
+  registerData: {
+    registerUser: {
+      id: string;
     }
-  );
+  } | null;
+}
+
+const useRegister = (): UseRegisterResult => {
+    const { loading, error, data, query } = useGraphQL<{ registerUser: { id: string } }>(process.env.REACT_APP_API);
+    
+    const register = useCallback(
+      async (username: string, password: string) => {
+        await query(
+          `
+          mutation Register($username: String!, $password: String!) {
+            registerUser(username: $username, password: $password) {
+              id
+            }
+          }
+        `,
+          { username, password }
+        );
+
+        return data?.registerUser?.id || null;
+      },
+      [query, data]
+    );
+
+    return { registerLoading: loading, registerError: error, register, registerData: data };
 };
+
+export default useRegister;

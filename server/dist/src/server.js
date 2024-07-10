@@ -34,14 +34,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
+import express from 'express';
 import mongoose from 'mongoose';
-import dotenv from 'dotenv';
 import { typeDefs } from './schema/typeDefs.js';
 import { resolvers } from './resolvers/userResolver.js';
-import { ApolloServerPluginLandingPageProductionDefault, ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
-dotenv.config();
+import { config } from './config.js';
 var startServer = function () { return __awaiter(void 0, void 0, void 0, function () {
     var app, server;
     return __generator(this, function (_a) {
@@ -51,30 +49,26 @@ var startServer = function () { return __awaiter(void 0, void 0, void 0, functio
                 server = new ApolloServer({
                     typeDefs: typeDefs,
                     resolvers: resolvers,
-                    plugins: [
-                        process.env.NODE_ENV === "production"
-                            ? ApolloServerPluginLandingPageProductionDefault({
-                                embed: true,
-                                graphRef: "plaid-gufzoj@current"
-                            })
-                            : ApolloServerPluginLandingPageLocalDefault({ embed: true })
-                    ]
+                    context: function (_a) {
+                        var req = _a.req;
+                        var token = req.headers.authorization || '';
+                        return { token: token };
+                    },
                 });
-                return [4 /*yield*/, server.start()];
-            case 1:
-                _a.sent();
                 server.applyMiddleware({ app: app });
-                return [4 /*yield*/, mongoose.connect(process.env.MONGO_URI, {
+                return [4 /*yield*/, mongoose.connect(config.mongodbUri, {
                         useNewUrlParser: true,
                         useUnifiedTopology: true,
                     })];
-            case 2:
+            case 1:
                 _a.sent();
                 app.listen({ port: 4000 }, function () {
-                    return console.log("Server ready at http://localhost:4000".concat(server.graphqlPath));
+                    console.log("\uD83D\uDE80 Server ready at http://localhost:4000".concat(server.graphqlPath));
                 });
                 return [2 /*return*/];
         }
     });
 }); };
-startServer();
+startServer().catch(function (err) {
+    console.error('Failed to start server:', err);
+});

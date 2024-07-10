@@ -1,4 +1,4 @@
-import React, {FC, ReactNode} from 'react';
+import {FC, ReactNode} from 'react';
 import { makeStyles } from '@mui/styles';
 import { Container, Paper, Box } from '@mui/material';
 

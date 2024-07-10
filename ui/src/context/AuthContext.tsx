@@ -1,66 +1,57 @@
-import React, { createContext, useState, useContext, useCallback, ReactNode } from 'react';
-import useGraphQL from '../hooks/useGraphql';
+import { FC, createContext, useState, useContext, useCallback, ReactNode, useEffect } from 'react';
+import useLogin from '../hooks/useLogin';
+import useRegister from '../hooks/useRegister';
 
 interface AuthContextType {
-  token: string | null;
-  login: (username: string, password: string) => Promise<void>;
-  register: (username: string, password: string) => Promise<void>;
+  login: (username: string, password: string) => Promise<string | null>;
+  register: (username: string, password: string) => Promise<string | null>;
   logout: () => void;
   isAuthenticated: boolean;
+  error: string | null;
+  loading: boolean;
 }
+
 interface AuthInterface {
   children: ReactNode;
 };
 
-interface QueryInterface {
-  loginUser: { token: string }
-  registerUser: { token: string }
-}
-
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider: React.FC<AuthInterface> = ({ children }) => {
+export const AuthProvider: FC<AuthInterface> = ({ children }) => {
+  const { loading, error, login, data } = useLogin();
+  const { register, registerLoading, registerError, registerData } = useRegister();
   const [token, setToken] = useState<string | null>(null);
-  const { loading, error, data, query } = useGraphQL<QueryInterface>('http://localhost:4000/graphql');
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(!!localStorage.getItem('token'));
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
 
-  const login = useCallback(async (username: string, password: string) => {
-    await query(`
-      mutation loginUser($username: String!, $password: String!) {
-        loginUser(username: $username, password: $password) {
-          token
-        }
-      }
-    `, { username, password });
-
-    if (data?.loginUser.token) {
-      setToken(data.loginUser.token);
-      setIsAuthenticated(true)
-    }
-  }, [query, data]);
-
-  const register = useCallback(async (username: string, password: string) => {
-    await query(`
-      mutation registerUser($username: String!, $password: String!) {
-        registerUser(username: $username, password: $password) {
-          token
-        }
-      }
-    `, { username, password });
-
-    if (data?.registerUser.token) {
-      setToken(data.registerUser.token);
+  useEffect(() => {
+    if (data?.loginUser) {
+      setToken(data?.loginUser.token)
       setIsAuthenticated(true);
     }
-  }, [query, data]);
+  }, [data])
+
+  useEffect(() => {
+    if (token) {
+      window.localStorage.setItem('token', token);
+    }
+  }, [token]);
+
+
+  useEffect(() => {
+    if (registerData?.registerUser) {
+      setToken(registerData?.registerUser.id)
+      setIsAuthenticated(true);
+    }
+  }, [registerData])
 
   const logout = useCallback(() => {
     setToken(null);
     setIsAuthenticated(false);
+    window.localStorage.removeItem('token')
   }, []);
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, token, login, register, logout }}>
+    <AuthContext.Provider value={{ login, register, logout, isAuthenticated, error: registerError || error, loading: registerLoading || loading }}>
       {children}
     </AuthContext.Provider>
   );

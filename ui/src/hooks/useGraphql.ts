@@ -5,7 +5,7 @@ interface GraphQLResponse<T> {
   errors?: any;
 }
 
-const useGraphQL = <T>(endpoint: string) => {
+const useGraphQL = <T>(endpoint: string | undefined) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<T | null>(null);
@@ -15,6 +15,7 @@ const useGraphQL = <T>(endpoint: string) => {
     setError(null);
     setData(null);
 
+    if (endpoint) {
     try {
       const response = await fetch(endpoint, {
         method: 'POST',
@@ -39,6 +40,7 @@ const useGraphQL = <T>(endpoint: string) => {
     } finally {
       setLoading(false);
     }
+  }
   }, [endpoint]);
 
   return { loading, error, data, query };

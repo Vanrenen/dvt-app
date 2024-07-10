@@ -1,28 +1,35 @@
-import { useMutation, useQueryClient } from 'react-query';
-import axios, { AxiosError } from 'axios';
+import { useCallback } from 'react';
+import useGraphQL from './useGraphql';
 
-interface LoginData {
-  username: string;
-  password: string;
+interface UseLoginResult {
+  loading: boolean;
+  error: string | null;
+  login: (username: string, password: string) => Promise<string | null>;
+  data: any;
 }
 
-interface LoginError {
-  message: string;
-}
+const useLogin = (): UseLoginResult => {
+  const { loading, error, data, query } = useGraphQL<{ loginUser: { token: string } }>(process.env.REACT_APP_API);
+  
+  const login = useCallback(
+    async (username: string, password: string) => {
+      await query(
+        `
+        mutation Login($username: String!, $password: String!) {
+          loginUser(username: $username, password: $password) {
+            token
+          }
+        }
+      `,
+        { username, password }
+      );
 
-export const useLogin = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation<unknown, AxiosError<LoginError>, LoginData>(
-    async (user: any) => {
-      console.log(user);
-      const response = await axios.post('http://localhost:4000/graphql/api/loginUser', user);
-      return response.data;
+      return data?.loginUser?.token || null;
     },
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries('currentUser');
-      },
-    }
+    [query, data]
   );
+
+  return { loading, error, login, data };
 };
+
+export default useLogin;

@@ -1,33 +1,27 @@
-import React, { useState } from 'react';
+import { FC, useState, useEffect, ChangeEvent } from 'react';
 import { TextField, Button, CircularProgress, Typography } from '@mui/material';
 import { useAuth } from '../context/AuthContext';
 import FormContainer from './FormContainer';
 import { useNavigate } from 'react-router-dom';
 
-const RegisterForm: React.FC = () => {
-  const { register } = useAuth();
+const RegisterForm: FC = () => {
+  const { register, isAuthenticated, error, loading } = useAuth();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ username: '', password: '' });
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async () => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      await register(formData.username, formData.password);
-      navigate('/welcome');
-    } catch (err) {
-      setError('Failed to register. Please try again.');
-    } finally {
-      setLoading(false);
-    }
+    await register(formData.username, formData.password);
   };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/welcome');
+    }
+  }, [isAuthenticated, navigate])
 
   return (
     <FormContainer>
@@ -58,15 +52,26 @@ const RegisterForm: React.FC = () => {
           {error}
         </Typography>
       )}
+      <Typography gutterBottom>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleSubmit}
+          disabled={loading}
+          fullWidth
+        >
+          {loading ? <CircularProgress size={24} /> : 'Register'}
+        </Button>
+      </Typography>
       <Button
-        variant="contained"
-        color="primary"
-        onClick={handleSubmit}
-        disabled={loading}
-        fullWidth
-      >
-        {loading ? <CircularProgress size={24} /> : 'Register'}
-      </Button>
+          variant="contained"
+          color="primary"
+          onClick={() => navigate('/login')}
+          disabled={loading}
+          fullWidth
+        >
+          {loading ? <CircularProgress size={24} /> : 'Login'}
+        </Button>
     </FormContainer>
   );
 };
