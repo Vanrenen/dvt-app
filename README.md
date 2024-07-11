@@ -13,3 +13,8 @@ Azure account
 ## Clone the repository:
 git clone https://github.com/Vanrenen/derivco-app.git  
 cd derivco-app
+
+# Extra functionality I did not have time to implement
+Sanatize inputs  
+Use Bcrypt salt to hash passwords  
+Add rate limiting on API's  
