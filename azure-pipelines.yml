@@ -64,23 +64,9 @@ stages:
               WebAppName: $(webAppName)
               packageForLinux: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
               RuntimeStack: 'NODE|10.10'
-              StartupCommand: 'npm run start'
-              ScriptPath: ui/
-              ScriptType: 'Inline Script'
-              InlineScript: |
-                npm install
-                npm run build --if-present
-          - task: AzureRmWebAppDeployment@4
-            displayName: 'Deploying Server: derivcoapp'
-            inputs:
-              azureSubscription: $(azureSubscription)
-              appType: webAppLinux
-              WebAppName: $(webAppName)
-              packageForLinux: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
-              RuntimeStack: 'NODE|10.10'
-              ScriptPath: server/
-              StartupCommand: 'npm run start'
-              ScriptType: 'Inline Script'
-              InlineScript: |
-                npm install
-                npm run build --if-present
+          - script: npm install
+            workingDirectory: ui
+            displayName: 'npm install'
+          - script: npm build
+            workingDirectory: ui
+            displayName: 'npm build'
