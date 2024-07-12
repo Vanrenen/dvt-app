@@ -25,3 +25,8 @@ steps:
       npm install
     displayName: 'npm install'
     workingDirectory: ui
+    
+  - script:
+      npm build
+    displayName: 'npm build'
+    workingDirectory: ui
