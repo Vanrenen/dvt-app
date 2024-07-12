@@ -27,6 +27,6 @@ steps:
     workingDirectory: ui
     
   - script:
-      npm build
+      npm run build
     displayName: 'npm build'
     workingDirectory: ui
