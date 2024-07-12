@@ -20,19 +20,34 @@ jobs:
   steps:
   - task: NodeTool@0
     inputs:
-      versionSpec: '16.x' # Use the appropriate Node.js version
+      versionSpec: '16.0'
     displayName: 'Install Node.js'
 
   - script: npm install
     displayName: 'Install dependencies'
+    workingDirectory: ui
 
   - script: npm run build
     displayName: 'Build application'
+    workingDirectory: ui
 
   - script: npm test
     displayName: 'Run tests'
+    workingDirectory: ui
+  
+  - script: npm install
+    displayName: 'Install dependencies'
+    workingDirectory: server
 
-- job: DeployFrontend
+  - script: npm run build
+    displayName: 'Build application'
+    workingDirectory: server
+
+  - script: npm run test
+    displayName: 'Run tests'
+    workingDirectory: server
+
+- job: Deploy
   displayName: 'Deploy Frontend'
   dependsOn: Build
   pool:
@@ -47,7 +62,7 @@ jobs:
       packageForLinux: '$(System.DefaultWorkingDirectory)/build'
     displayName: 'Deploy to Azure App Service'
 
-- job: DeployBackend
+- job: Deploy
   displayName: 'Deploy Backend'
   dependsOn: Build
   pool:
