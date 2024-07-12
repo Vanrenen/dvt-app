@@ -5,11 +5,11 @@ trigger:
 
 variables:
   # Define the name of the Azure Resource Group, App Service, and other variables
-  resourceGroupName: 'your-resource-group'
-  appServiceName: 'your-app-service'
-  location: 'your-location' # e.g., westus
-  mongoDBConnectionString: 'your-mongodb-connection-string'
-  backendAPIUrl: 'your-backend-api-url'
+  resourceGroupName: 'derivcoapp'
+  appServiceName: 'derivcoapp (F1: 1)'
+  location: 'South Africa North ' # e.g., westus
+  mongoDBConnectionString: 'mongodb+srv://vanrenenvrc:iF7pS79SXrIn6biK@derivcoassessment.kqsemqm.mongodb.net/?retryWrites=true&w=majority&appName=DerivcoAssessment'
+  backendAPIUrl: 'http://localhost:4000/graphql'
 
 jobs:
 - job: Build
