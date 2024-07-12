@@ -1,0 +1,81 @@
+trigger:
+  branches:
+    include:
+      - main
+
+variables:
+  # Define the name of the Azure Resource Group, App Service, and other variables
+  resourceGroupName: 'derivcoapp'
+  appServiceName: 'derivcoapp (F1: 1)'
+  location: 'South Africa North ' # e.g., westus
+  mongoDBConnectionString: 'mongodb+srv://vanrenenvrc:iF7pS79SXrIn6biK@derivcoassessment.kqsemqm.mongodb.net/?retryWrites=true&w=majority&appName=DerivcoAssessment'
+  backendAPIUrl: 'http://localhost:4000/graphql'
+
+jobs:
+- job: Build
+  displayName: 'Build and Test'
+  pool:
+    vmImage: 'ubuntu-latest'
+
+  steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '16.0'
+    displayName: 'Install Node.js'
+
+  - script: npm install
+    displayName: 'Install dependencies'
+    workingDirectory: ui
+
+  - script: npm run build
+    displayName: 'Build application'
+    workingDirectory: ui
+  
+  - script: npm install
+    displayName: 'Install dependencies'
+    workingDirectory: server
+
+  - script: npm run compile
+    displayName: 'Build application'
+    workingDirectory: server
+
+- job: DeployFE
+  displayName: 'Deploy Frontend'
+  dependsOn: Build
+  pool:
+    vmImage: 'ubuntu-latest'
+
+  steps:
+  - script: |
+      cd ui
+  - task: AzureRmWebAppDeployment@4
+    inputs:
+      azureSubscription: '819fbc6a-a3e4-4794-aaa3-470f43bf3d40'
+      appType: 'webApp'
+      WebappName: $(appServiceName)
+      packageForLinux: '$(System.DefaultWorkingDirectory)/build'
+    displayName: 'Deploy to Azure App Service'
+
+- job: DeployBE
+  displayName: 'Deploy Backend'
+  dependsOn: Build
+  pool:
+    vmImage: 'ubuntu-latest'
+
+  steps:
+  - script: |
+      cd backend
+      docker build -t backend:latest .
+      docker tag backend:latest $(appServiceName).azurecr.io/backend:latest
+      echo $(AZURE_CREDENTIALS) | docker login $(appServiceName).azurecr.io --username $(ACR_USERNAME) --password-stdin
+      docker push $(appServiceName).azurecr.io/backend:latest
+    displayName: 'Build and Push Docker Image'
+
+  - task: AzureWebAppContainer@1
+    inputs:
+      azureSubscription: '819fbc6a-a3e4-4794-aaa3-470f43bf3d40'
+      appName: $(appServiceName)
+      imageName: '$(appServiceName).azurecr.io/backend:latest'
+      configurationStrings: '-e "MONGO_URI=$(mongoDBConnectionString)" -e "API_URL=$(backendAPIUrl)"'
+    displayName: 'Deploy Backend to Azure App Service'
+
