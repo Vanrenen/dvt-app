@@ -41,7 +41,7 @@ jobs:
   steps:
   - task: AzureRmWebAppDeployment@4
     inputs:
-      azureSubscription: 'your-azure-subscription'
+      azureSubscription: 'Azure subscription 1'
       appType: 'webApp'
       WebappName: $(appServiceName)
       packageForLinux: '$(System.DefaultWorkingDirectory)/build'
@@ -64,7 +64,7 @@ jobs:
 
   - task: AzureWebAppContainer@1
     inputs:
-      azureSubscription: 'your-azure-subscription'
+      azureSubscription: 'Azure subscription 1'
       appName: $(appServiceName)
       imageName: '$(appServiceName).azurecr.io/backend:latest'
       configurationStrings: '-e "MONGO_URI=$(mongoDBConnectionString)" -e "API_URL=$(backendAPIUrl)"'
