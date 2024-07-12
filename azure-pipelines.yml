@@ -35,7 +35,7 @@ jobs:
     displayName: 'Install dependencies'
     workingDirectory: server
 
-  - script: npm run build
+  - script: npm run compile
     displayName: 'Build application'
     workingDirectory: server
 
