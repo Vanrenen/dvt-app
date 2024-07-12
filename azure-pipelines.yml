@@ -1,32 +1,72 @@
-# Node.js React Web App to Linux on Azure
-# Build a Node.js React app and deploy it to Azure as a Linux web app.
-# Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
-
 trigger:
-- main
+  branches:
+    include:
+      - main
 
 variables:
+  # Define the name of the Azure Resource Group, App Service, and other variables
+  resourceGroupName: 'your-resource-group'
+  appServiceName: 'your-app-service'
+  location: 'your-location' # e.g., westus
+  mongoDBConnectionString: 'your-mongodb-connection-string'
+  backendAPIUrl: 'your-backend-api-url'
 
-  # Azure Resource Manager connection created during pipeline creation
-  azureSubscription: '819fbc6a-a3e4-4794-aaa3-470f43bf3d40'
+jobs:
+- job: Build
+  displayName: 'Build and Test'
+  pool:
+    vmImage: 'ubuntu-latest'
 
-  # Web app name
-  webAppName: 'derivcoapp'
+  steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '16.x' # Use the appropriate Node.js version
+    displayName: 'Install Node.js'
 
-  # Environment name
-  environmentName: 'derivcoapp'
+  - script: npm install
+    displayName: 'Install dependencies'
 
-  # Agent VM image name
-  vmImageName: 'ubuntu-latest'
+  - script: npm run build
+    displayName: 'Build application'
 
-steps:
-  - script: 
-      npm install
-    displayName: 'npm install'
-    workingDirectory: ui
-    
-  - script:
-      npm run build
-    displayName: 'npm build'
-    workingDirectory: ui
+  - script: npm test
+    displayName: 'Run tests'
+
+- job: DeployFrontend
+  displayName: 'Deploy Frontend'
+  dependsOn: Build
+  pool:
+    vmImage: 'ubuntu-latest'
+
+  steps:
+  - task: AzureRmWebAppDeployment@4
+    inputs:
+      azureSubscription: 'your-azure-subscription'
+      appType: 'webApp'
+      WebappName: $(appServiceName)
+      packageForLinux: '$(System.DefaultWorkingDirectory)/build'
+    displayName: 'Deploy to Azure App Service'
+
+- job: DeployBackend
+  displayName: 'Deploy Backend'
+  dependsOn: Build
+  pool:
+    vmImage: 'ubuntu-latest'
+
+  steps:
+  - script: |
+      cd backend
+      docker build -t backend:latest .
+      docker tag backend:latest $(appServiceName).azurecr.io/backend:latest
+      echo $(AZURE_CREDENTIALS) | docker login $(appServiceName).azurecr.io --username $(ACR_USERNAME) --password-stdin
+      docker push $(appServiceName).azurecr.io/backend:latest
+    displayName: 'Build and Push Docker Image'
+
+  - task: AzureWebAppContainer@1
+    inputs:
+      azureSubscription: 'your-azure-subscription'
+      appName: $(appServiceName)
+      imageName: '$(appServiceName).azurecr.io/backend:latest'
+      configurationStrings: '-e "MONGO_URI=$(mongoDBConnectionString)" -e "API_URL=$(backendAPIUrl)"'
+    displayName: 'Deploy Backend to Azure App Service'
+
