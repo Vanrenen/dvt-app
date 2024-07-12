@@ -55,6 +55,8 @@ jobs:
       WebappName: $(appServiceName)
       packageForLinux: '$(System.DefaultWorkingDirectory)/ui/build'
     displayName: 'Deploy to Azure App Service'
+    
+  - task: PublishBuildArtifacts@1
 
 - job: DeployBE
   displayName: 'Deploy Backend'
@@ -78,4 +80,3 @@ jobs:
       imageName: '$(appServiceName).azurecr.io/server:latest'
       configurationStrings: '-e "MONGO_URI=$(mongoDBConnectionString)" -e "API_URL=$(backendAPIUrl)"'
     displayName: 'Deploy Backend to Azure App Service'
-
