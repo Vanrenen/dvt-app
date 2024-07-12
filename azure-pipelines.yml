@@ -64,9 +64,3 @@ stages:
               WebAppName: $(webAppName)
               packageForLinux: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
               RuntimeStack: 'NODE|10.10'
-          - script: npm install
-            workingDirectory: ui
-            displayName: 'npm install'
-          - script: npm build
-            workingDirectory: ui
-            displayName: 'npm build'
