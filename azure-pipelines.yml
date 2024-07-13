@@ -46,8 +46,6 @@ jobs:
     vmImage: 'ubuntu-latest'
 
   steps:
-  - script: |
-      cd ui
   - task: AzureRmWebAppDeployment@4
     inputs:
       ConnectionType: 'AzureRM'
