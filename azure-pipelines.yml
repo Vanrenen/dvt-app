@@ -38,6 +38,7 @@ jobs:
   - script: npm run compile
     displayName: 'Build application'
     workingDirectory: server
+  - task: PublishBuildArtifacts@1
 
 - job: DeployFE
   displayName: 'Deploy Frontend'
@@ -55,7 +56,6 @@ jobs:
       packageForLinux: '$(System.DefaultWorkingDirectory)/ui/build'
     displayName: 'Deploy to Azure App Service'
     
-  - task: PublishBuildArtifacts@1
 
 # - job: DeployBE
 #   displayName: 'Deploy Backend'
