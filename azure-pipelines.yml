@@ -43,7 +43,7 @@ jobs:
     inputs:
       rootFolderOrFile: '$(Build.BinariesDirectory)/ui'
       archiveType: 'zip'
-      archiveFile: '$(Build.ArtifactStagingDirectory)/ui/$(Build.BuildId).zip'
+      archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
   - task: PublishBuildArtifacts@1
 
 - job: DeployFE
