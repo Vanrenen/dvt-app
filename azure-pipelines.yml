@@ -39,6 +39,13 @@ jobs:
     displayName: 'Build application'
     workingDirectory: server
 
+  - task: ArchiveFiles@2
+    inputs:
+      rootFolderOrFile: '$(Build.BinariesDirectory)'
+      archiveType: 'zip'
+      archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+  - task: PublishBuildArtifacts@1
+
 - job: DeployFE
   displayName: 'Deploy Frontend'
   dependsOn: Build
@@ -46,36 +53,35 @@ jobs:
     vmImage: 'ubuntu-latest'
 
   steps:
-  - script: |
-      cd ui
   - task: AzureRmWebAppDeployment@4
     inputs:
+      ConnectionType: 'AzureRM'
       azureSubscription: '819fbc6a-a3e4-4794-aaa3-470f43bf3d40'
       appType: 'webApp'
-      WebappName: $(appServiceName)
-      packageForLinux: '$(System.DefaultWorkingDirectory)/build'
+      WebAppName: 'derivcoapp'
+      packageForLinux: '$(System.DefaultWorkingDirectory)'
     displayName: 'Deploy to Azure App Service'
+    
 
-- job: DeployBE
-  displayName: 'Deploy Backend'
-  dependsOn: Build
-  pool:
-    vmImage: 'ubuntu-latest'
+# - job: DeployBE
+#   displayName: 'Deploy Backend'
+#   dependsOn: Build
+#   pool:
+#     vmImage: 'ubuntu-latest'
 
-  steps:
-  - script: |
-      cd backend
-      docker build -t backend:latest .
-      docker tag backend:latest $(appServiceName).azurecr.io/backend:latest
-      echo $(AZURE_CREDENTIALS) | docker login $(appServiceName).azurecr.io --username $(ACR_USERNAME) --password-stdin
-      docker push $(appServiceName).azurecr.io/backend:latest
-    displayName: 'Build and Push Docker Image'
+#   steps:
+#   - script: |
+#       cd server
+#       docker build -t server:latest .
+#       docker tag server:latest $(appServiceName).azurecr.io/server:latest
+#       echo $(AZURE_CREDENTIALS) | docker login $(appServiceName).azurecr.io --username $(ACR_USERNAME) --password-stdin
+#       docker push $(appServiceName).azurecr.io/backend:latest
+#     displayName: 'Build and Push Docker Image'
 
-  - task: AzureWebAppContainer@1
-    inputs:
-      azureSubscription: '819fbc6a-a3e4-4794-aaa3-470f43bf3d40'
-      appName: $(appServiceName)
-      imageName: '$(appServiceName).azurecr.io/backend:latest'
-      configurationStrings: '-e "MONGO_URI=$(mongoDBConnectionString)" -e "API_URL=$(backendAPIUrl)"'
-    displayName: 'Deploy Backend to Azure App Service'
-
+#   - task: AzureWebAppContainer@1
+#     inputs:
+#       azureSubscription: '819fbc6a-a3e4-4794-aaa3-470f43bf3d40'
+#       appName: $(appServiceName)
+#       imageName: '$(appServiceName).azurecr.io/server:latest'
+#       configurationStrings: '-e "MONGO_URI=$(mongoDBConnectionString)" -e "API_URL=$(backendAPIUrl)"'
+#     displayName: 'Deploy Backend to Azure App Service'
