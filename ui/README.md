@@ -7,7 +7,7 @@ npm install
 React  
 Typescript  
 EmotionJS  
-UI  
+MUI  
 Jest  
 Axios
 
