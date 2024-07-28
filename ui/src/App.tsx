@@ -2,8 +2,10 @@ import { FC } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import RegisterForm from './components/RegisterForm';
 import LoginForm from './components/LoginForm';
-import WelcomePage from './components/WelcomePage';
+import ProductsPage from './pages/ProductsPage';
+import ProductPage from './pages/ProductPage';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import Header from './components/Header';
 
 const App: FC = () => {
   return (
@@ -14,6 +16,7 @@ const App: FC = () => {
           <Route path="/login" element={<LoginForm />} />
           <Route path="/" element={<LoginForm />} />
           <Route path="*" element={<PrivateRoute />} />
+          <Route path="/product/*" element={[<Header />, <ProductPage />]} />
         </Routes>
       </Router>
     </AuthProvider>
@@ -25,7 +28,12 @@ const PrivateRoute: FC = () => {
 
   return (
     <Routes>
-      <Route path='*' element={isAuthenticated ? <WelcomePage/> : <Navigate to="/login" replace />} />
+      {isAuthenticated ? (
+          <Route path='*' element={[<Header />, <ProductsPage/>]} />
+      ): (
+        <Route path='*' element={<Navigate to="/login" replace />} />
+      )}
+      
     </Routes>
   );
 };

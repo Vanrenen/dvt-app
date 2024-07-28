@@ -1,19 +1,10 @@
 import { useCallback } from 'react';
 import useGraphQL from './useGraphql';
+import { UseRegisterResult } from '../interfaces/hookInterfaces';
 
-interface UseRegisterResult {
-  registerLoading: boolean;
-  registerError: string | null;
-  register: (username: string, password: string) => Promise<string | null>;
-  registerData: {
-    registerUser: {
-      id: string;
-    }
-  } | null;
-}
 
 const useRegister = (): UseRegisterResult => {
-    const { loading, error, data, query } = useGraphQL<{ registerUser: { id: string } }>(process.env.REACT_APP_API);
+    const { loading, error, data, query } = useGraphQL<{ registerUser: { id: string } }>(process.env.REACT_APP_GRAPHQL_API);
     
     const register = useCallback(
       async (username: string, password: string) => {

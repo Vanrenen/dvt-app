@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import { UserInputError } from 'apollo-server-express';
 import User from '../models/User.js';
 
-export const resolvers = {
+export const userResolvers = {
   Query: {
     users: async () => {
       try {

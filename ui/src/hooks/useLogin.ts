@@ -1,15 +1,10 @@
 import { useCallback } from 'react';
 import useGraphQL from './useGraphql';
+import { UseLoginResult } from '../interfaces/hookInterfaces';
 
-interface UseLoginResult {
-  loading: boolean;
-  error: string | null;
-  login: (username: string, password: string) => Promise<string | null>;
-  data: any;
-}
 
 const useLogin = (): UseLoginResult => {
-  const { loading, error, data, query } = useGraphQL<{ loginUser: { token: string } }>(process.env.REACT_APP_API);
+  const { loading, error, data, query } = useGraphQL<{ loginUser: { token: string } }>(process.env.REACT_APP_GRAPHQL_API);
   
   const login = useCallback(
     async (username: string, password: string) => {

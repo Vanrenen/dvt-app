@@ -6,13 +6,33 @@ export const typeDefs = gql`
     username: String!
   }
 
+  type Product {
+    id: String
+    title: String
+    price: String
+    description: String
+    image: String
+  }
+
+  type Cart {
+    id: String
+    userId: String
+    date: String
+    products: [Product]
+  }
+
   type Token {
     token: String!
   }
 
   type Query {
     user(id: String!): User
-    users: [User!] 
+    users: [User!]
+    products: [Product!]
+    product(id: String!): Product
+    productsCategories: [String]
+    productsCategory(category: String!): [String]
+    userCart(id: String!): [Cart]
   }
 
   type Mutation {

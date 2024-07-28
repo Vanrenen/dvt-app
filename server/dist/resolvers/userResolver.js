@@ -38,7 +38,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { UserInputError } from 'apollo-server-express';
 import User from '../models/User.js';
-export var resolvers = {
+export var userResolvers = {
     Query: {
         users: function () { return __awaiter(void 0, void 0, void 0, function () {
             var err_1;

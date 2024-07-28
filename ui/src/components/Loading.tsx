@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme) => ({
   },
   loader: {
     margin: '0 auto',
-    color: '#fff',
+    color: '#1876d2',
     width: '4px',
     top: '50%',
     position: 'relative',

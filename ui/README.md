@@ -15,7 +15,7 @@ Axios
 Create a .env file in the root directory and add your environment variables:  
 .env  
 This file contains environment-specific settings. Here's a sample:  
-REACT_APP_API=
+GRAPHQL_API_API=
 
 # Caching
 React-query is used for caching in the frontend
