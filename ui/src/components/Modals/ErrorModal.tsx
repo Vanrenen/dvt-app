@@ -1,17 +1,31 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import BasicModal from './Modal';
 
 interface ErrorModalInterface {
-  error: string;
+  error: string | null;
 }
 
 const ErrorModal = (props: ErrorModalInterface) => {
   const [open, setOpen ] = useState(false);
+  const timerId = useRef<ReturnType<typeof setTimeout>>();
+
   useEffect(() => {
     if (props.error) {
       setOpen(true);
     }
   }, [props.error]);
+
+  useEffect(() => {
+    if (open) {
+      timerId.current = setTimeout(() => {
+        setOpen(false);
+      }, 5000);
+    }
+
+    return () => {
+      clearTimeout(timerId.current);
+    };
+  }, [open]);
 
   return (
     <BasicModal
@@ -21,6 +35,9 @@ const ErrorModal = (props: ErrorModalInterface) => {
       body={props.error}
       open={open}
       handleClose={() => setOpen(false)}
+      border='1px  solid red'
+      backgroundColor='#FF7F7F'
+      color='#FFF'
     />
   )
 };

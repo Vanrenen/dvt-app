@@ -2,7 +2,7 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { Container, Theme } from '@mui/material';
+import { Box, Container, Theme } from '@mui/material';
 
 declare module '@mui/styles/defaultTheme' {
   interface DefaultTheme extends Theme { }
@@ -23,9 +23,9 @@ const theme = createTheme({
 ReactDOM.render(
   <ThemeProvider theme={theme}>
     <QueryClientProvider client={queryClient}>
-      <Container sx={{maxWidth: '1200px'}}>
+      <Box sx={{maxWidth: '1200px', background: '#F5F5F5', margin: '0 auto'}}>
         <App />
-      </Container>
+      </Box>
     </QueryClientProvider>
   </ThemeProvider>,
   document.getElementById('root')

@@ -1,11 +1,11 @@
-import { FC, useEffect, useState, ChangeEvent } from 'react';
+import { useEffect, useState, ChangeEvent } from 'react';
 import { TextField, Button, Typography } from '@mui/material';
 import { useAuth } from '../context/AuthContext';
-import FormContainer from './FormContainer';
+import FormContainer from './General/FormContainer';
 import { useNavigate } from 'react-router-dom';
-import Loading from './Loading';
+import Loading from './General/Loading';
 
-const LoginForm: FC = () => {
+const LoginForm = () => {
   const { login, isAuthenticated, error, loading } = useAuth();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ username: '', password: '' });

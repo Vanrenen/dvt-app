@@ -1,8 +1,7 @@
-import { FC } from 'react';
 import { makeStyles } from '@mui/styles';
 import { Container, Box } from '@mui/material';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   container : {
     height: '24px'
   },
@@ -28,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Loading: FC = () => {
+const Loading = () => {
   const classes = useStyles();
 
   return (

@@ -11,8 +11,6 @@ import {
 
 dotenv.config();
 
-console.log(resolvers)
-
 const startServer = async () => {
     const app = express();
     const server = new ApolloServer({ 

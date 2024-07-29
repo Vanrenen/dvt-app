@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
 
 const FormContainer: FC<FormInterface> = ({ children }) => {
   const classes = useStyles();
+
   return (
     <Container className={classes.container}>
       <Paper className={classes.paper}>

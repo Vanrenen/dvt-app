@@ -1,12 +1,13 @@
-import { FC, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useFetchProducts } from '../hooks/useProducts';
 import { Product } from '../interfaces/productInterfaces';
 import ProductList from '../components/ProductList';
-import Loading from '../components/Loading';
-import { Box, Container, Typography } from '@mui/material';
+import Loading from '../components/General/Loading';
+import { Box, Typography } from '@mui/material';
 import ErrorModal from '../components/Modals/ErrorModal';
+import Header from '../components/General/Header';
 
-const WelcomePage: FC = () => {
+const WelcomePage = () => {
   const { loading, error, getProducts, data } = useFetchProducts();
   const [ products, setProducts ] = useState<[Product] | []>([]);
 
@@ -21,12 +22,13 @@ const WelcomePage: FC = () => {
   }, [data]);
 
   return (
-    <Container>
-      {error && !Loading && (
+    <Box>
+      <Header />
+      {!error && !loading && (
         <ErrorModal error={error} />
       )}
       {loading && !error && (
-        <Box style={{width: '100%', top: '50%', position: 'absolute'}}>
+        <Box style={{width: '100%', top: '50%', position: 'absolute', left: '0px'}}>
           <Typography variant='h4' sx={{textAlign: 'center'}}>The Oompa Loompa's are busy fetching your data!!</Typography>
           <Loading />
         </Box>
@@ -34,7 +36,7 @@ const WelcomePage: FC = () => {
       {products.length > 0 && !loading && (
         <ProductList products={products} />
       )}
-    </Container>
+    </Box>
   );
 };
 

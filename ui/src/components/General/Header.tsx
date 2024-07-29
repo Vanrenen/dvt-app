@@ -2,7 +2,8 @@ import { useState } from "react";
 import { AppBar, Box, Button, Drawer, Toolbar, Typography } from "@mui/material";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { useNavigate } from 'react-router-dom';
-import { isProductsPage } from "../utils/productUtils";
+import { isProductsPage } from "../../utils/productUtils";
+import Cart from "../Cart";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -29,8 +30,8 @@ const Header = () => {
         <Button color="inherit" onClick={toggleDrawer(true)}>Cart</Button>
       </Toolbar>
     </AppBar>
-    <Drawer open={open} onClose={toggleDrawer(false)}>
-      {'opened'}
+    <Drawer open={open} onClose={toggleDrawer(false)} anchor='right'>
+      <Cart toggleDrawer={setOpen} />
     </Drawer>
   </Box>
   )
