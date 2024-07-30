@@ -42,7 +42,6 @@ import { typeDefs } from './schema/typeDefs.js';
 import { resolvers } from './resolvers/resolver.js';
 import { ApolloServerPluginLandingPageProductionDefault, ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
 dotenv.config();
-console.log(resolvers);
 var startServer = function () { return __awaiter(void 0, void 0, void 0, function () {
     var app, server;
     return __generator(this, function (_a) {

@@ -1,5 +1,13 @@
-import { useEffect, useState, ChangeEvent } from 'react';
-import { TextField, Button, Typography } from '@mui/material';
+import {
+  useEffect,
+  useState,
+  ChangeEvent,
+} from 'react';
+import {
+  TextField,
+  Button,
+  Typography,
+} from '@mui/material';
 import { useAuth } from '../context/AuthContext';
 import FormContainer from './General/FormContainer';
 import { useNavigate } from 'react-router-dom';
@@ -26,37 +34,37 @@ const LoginForm = () => {
 
   return (
     <FormContainer>
-      <Typography variant="h1" gutterBottom>
+      <Typography variant='h1' gutterBottom>
         Login
       </Typography>
       <TextField
-        label="Username"
-        name="username"
+        label='Username'
+        name='username'
         value={formData.username}
         onChange={handleChange}
-        margin="normal"
+        margin='normal'
         fullWidth
         required
       />
       <TextField
-        label="Password"
-        name="password"
-        type="password"
+        label='Password'
+        name='password'
+        type='password'
         value={formData.password}
         onChange={handleChange}
-        margin="normal"
+        margin='normal'
         fullWidth
         required
       />
       {error && (
-        <Typography variant="body1" color="error" gutterBottom>
+        <Typography variant='body1' color='error' gutterBottom>
           {error}
         </Typography>
       )}
       <Typography gutterBottom>
       <Button
-        variant="contained"
-        color="primary"
+        variant='contained'
+        color='primary'
         onClick={handleSubmit}
         disabled={loading}
         fullWidth
@@ -65,8 +73,8 @@ const LoginForm = () => {
       </Button>
       </Typography>
       <Button
-          variant="contained"
-          color="primary"
+          variant='contained'
+          color='primary'
           onClick={() => navigate('/register')}
           disabled={loading}
           fullWidth

@@ -1,4 +1,8 @@
-import { Box, Button, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Typography,
+} from '@mui/material';
 import { Product } from '../interfaces/productInterfaces';
 import { currencyFormatter } from '../utils/currencyUtils';
 import QuantitySelector from './General/QuantitySelector';

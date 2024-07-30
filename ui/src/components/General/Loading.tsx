@@ -1,5 +1,9 @@
 import { makeStyles } from '@mui/styles';
-import { Container, Box } from '@mui/material';
+import {
+  Container,
+  Box,
+  Typography,
+} from '@mui/material';
 
 const useStyles = makeStyles(() => ({
   container : {
@@ -32,6 +36,12 @@ const Loading = () => {
 
   return (
     <Container className={classes.container}>
+      <Typography
+        variant='h4'
+        sx={{textAlign: 'center'}}
+      >
+        The Oompa Loompa's are busy fetching your data!!
+      </Typography>
       <Box className={classes.loader} />
     </Container>
   )

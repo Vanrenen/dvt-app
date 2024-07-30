@@ -1,8 +1,7 @@
-import { ImageListItem, ImageListItemBar, Skeleton } from "@mui/material";
+import { ImageListItem, ImageListItemBar, Skeleton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { currencyFormatter } from "../utils/currencyUtils";
-import { Product } from "../interfaces/productInterfaces";
-import { memo } from "react";
+import { currencyFormatter } from '../utils/currencyUtils';
+import { Product } from '../interfaces/productInterfaces';
 
 const ProductListItem = (props: {item: Product}) => {
   const navigate = useNavigate();
@@ -33,7 +32,11 @@ const ProductListItem = (props: {item: Product}) => {
             height='465px'
           />
           ) : (
-            <Skeleton variant="rectangular" width='325px' height='465px' />
+            <Skeleton
+              variant='rectangular'
+              width='325px'
+              height='465px'
+            />
           )}
           <ImageListItemBar
             title={props.item.title}

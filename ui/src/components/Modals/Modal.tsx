@@ -1,4 +1,8 @@
-import { Box, Typography, Modal } from '@mui/material';
+import {
+  Box,
+  Typography,
+  Modal,
+} from '@mui/material';
 
 const style = {
   position: 'fixed',
@@ -16,7 +20,7 @@ const style = {
 
 interface BasicModalInterface {
   open: boolean;
-  handleClose: ((event: {}, reason: "backdropClick" | "escapeKeyDown") => void);
+  handleClose: ((event: {}, reason: 'backdropClick' | 'escapeKeyDown') => void);
   width?: string;
   top?: string;
   title: string;
@@ -39,10 +43,14 @@ const BasicModal = (props: BasicModalInterface) => (
         bgcolor: props.backgroundColor ?? style.bgcolor,
         color: props.color ?? style.color,
       }}>
-        <Typography id="modal-modal-title" variant="h5" component="h2">
+        <Typography
+          id='modal-modal-title'
+          variant='h5'
+          component='h2'
+        >
           {props.title}
         </Typography>
-        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+        <Typography id='modal-modal-description' sx={{ mt: 2 }}>
           {props.body}
         </Typography>
       </Box>

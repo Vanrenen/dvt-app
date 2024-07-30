@@ -1,18 +1,28 @@
 import { useEffect, useState } from 'react';
-import { useFetchProducts } from '../hooks/useProducts';
+import {
+  useFetchCategories,
+  useFetchProductCategory,
+  useFetchProducts,
+} from '../hooks/useProducts';
 import { Product } from '../interfaces/productInterfaces';
 import ProductList from '../components/ProductList';
 import Loading from '../components/General/Loading';
-import { Box, Typography } from '@mui/material';
+import { Box, Container } from '@mui/material';
 import ErrorModal from '../components/Modals/ErrorModal';
 import Header from '../components/General/Header';
+import Categories from '../components/Categories';
 
 const WelcomePage = () => {
   const { loading, error, getProducts, data } = useFetchProducts();
   const [ products, setProducts ] = useState<[Product] | []>([]);
+  const { getProductsCategories, fetchedCategories } = useFetchCategories();
+  const [ categories, setCategories ] = useState<[string]>();
+  const { fetchedProductCategoryLoading, getProductsCategory, fetchedProductCategory } = useFetchProductCategory()
+
 
   useEffect(() => {
     getProducts();
+    getProductsCategories();
   }, []);
 
   useEffect(() => {
@@ -21,20 +31,44 @@ const WelcomePage = () => {
     }
   }, [data]);
 
+  useEffect(() => {
+    if (fetchedProductCategory?.productsCategory && fetchedProductCategory?.productsCategory?.length > 0) {
+      setProducts(fetchedProductCategory.productsCategory);
+    }
+  }, [fetchedProductCategory]);
+
+  useEffect(() => {
+    if (fetchedCategories?.productsCategories && fetchedCategories?.productsCategories?.length > 0) {
+      setCategories(fetchedCategories.productsCategories);
+    }
+  }, [fetchedCategories]);
+
   return (
     <Box>
       <Header />
-      {!error && !loading && (
+      <Categories
+        categories={categories}
+        getProductsCategory={getProductsCategory}
+        getProducts={getProducts}
+        setProducts={setProducts}
+      />
+      {error && !loading && (
         <ErrorModal error={error} />
       )}
-      {loading && !error && (
-        <Box style={{width: '100%', top: '50%', position: 'absolute', left: '0px'}}>
-          <Typography variant='h4' sx={{textAlign: 'center'}}>The Oompa Loompa's are busy fetching your data!!</Typography>
+      {((loading && !error) ||(fetchedProductCategoryLoading))  && (
+        <Box style={{
+          width: '100%',
+          top: '50%',
+          position: 'absolute',
+          left: '0px',
+        }}>
           <Loading />
         </Box>
       )} 
       {products.length > 0 && !loading && (
-        <ProductList products={products} />
+        <Container>
+          <ProductList products={products} />
+        </Container>
       )}
     </Box>
   );

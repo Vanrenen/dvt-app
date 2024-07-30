@@ -1,7 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useFetchProduct } from '../hooks/useProducts';
 import { fetchProductIdFromUrl } from '../utils/productUtils';
-import { Box, Button, Container, List, ListItem, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Container,
+  List,
+  ListItem,
+  Typography,
+} from '@mui/material';
 import Loading from '../components/General/Loading';
 import { Product } from '../interfaces/productInterfaces';
 import { currencyFormatter } from '../utils/currencyUtils';
@@ -30,7 +37,7 @@ const ProductPage = () => {
   }, [data]);
 
   return (
-    <Box>
+    <Box sx={{height: '100vh'}}>
       <Header />
       {error && !loading && (
         <ErrorModal error={error} />
@@ -42,14 +49,6 @@ const ProductPage = () => {
           position: 'absolute',
           left: '0px',
         }}>
-          <Typography
-            variant='h4'
-            sx={{
-              textAlign: 'center'
-            }}
-          >
-            The Oompa Loompa's are busy fetching your data!!
-          </Typography>
           <Loading />
         </Box>
       )}
@@ -72,7 +71,7 @@ const ProductPage = () => {
                   srcSet={`${product.image}?w=248&fit=crop&auto=format&dpr=2 2x`}
                   src={`${product?.image}?w=248&fit=crop&auto=format`}
                   alt={product.title}
-                  loading="lazy"
+                  loading='lazy'
                 />
               </Box>
               <Box>

@@ -1,5 +1,5 @@
 import { makeStyles } from '@mui/styles';
-import { Box, Container } from '@mui/material';
+import { Box } from '@mui/material';
 
 const useStyles = makeStyles(() => ({
   container: {

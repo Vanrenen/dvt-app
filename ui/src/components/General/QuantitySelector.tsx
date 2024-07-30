@@ -1,5 +1,11 @@
-import { useState } from "react";
-import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import { useState } from 'react';
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+} from '@mui/material';
 
 const QuantitySelector = () => {
   const [quantity, setQuantity] = useState('1');
@@ -9,13 +15,13 @@ const QuantitySelector = () => {
   };
 
   return (
-    <FormControl sx={{ m: 1, minWidth: 120,  float: 'right', margin: '0'}} size="small">
-      <InputLabel id="quantitySelector">Quantity</InputLabel>
+    <FormControl sx={{ m: 1, minWidth: 120,  float: 'right', margin: '0'}} size='small'>
+      <InputLabel id='quantitySelector'>Quantity</InputLabel>
       <Select
-        labelId="quantitySelector"
-        id="quantitySelector"
+        labelId='quantitySelector'
+        id='quantitySelector'
         value={quantity}
-        label="Quantity"
+        label='Quantity'
         onChange={handleChange}
         size='small'
       >

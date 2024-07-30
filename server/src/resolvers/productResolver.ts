@@ -28,7 +28,7 @@ export const productResolvers = {
     },
     productsCategory: async (_: any, { category }: any) => {
       try {
-        const response = await axios.get(`${process.env.FAKE_STORE_API}/products/categories/${category}`);
+        const response = await axios.get(`${process.env.FAKE_STORE_API}/products/category/${category}`);
         return response.data;
       } catch (error) {
         throw new Error('Error fetching products');

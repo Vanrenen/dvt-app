@@ -1,4 +1,12 @@
-import { FC, createContext, useState, useContext, useCallback, ReactNode, useEffect } from 'react';
+import {
+  FC,
+  createContext,
+  useState,
+  useContext,
+  useCallback,
+  ReactNode,
+  useEffect,
+} from 'react';
 import useLogin from '../hooks/useLogin';
 import useRegister from '../hooks/useRegister';
 
@@ -21,7 +29,7 @@ export const AuthProvider: FC<AuthInterface> = ({ children }) => {
   const { loading, error, login, data } = useLogin();
   const { register, registerLoading, registerError, registerData } = useRegister();
   const [token, setToken] = useState<string | null>(null);
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(!!window.localStorage.token)
 
   useEffect(() => {
     if (data?.loginUser) {
@@ -51,7 +59,9 @@ export const AuthProvider: FC<AuthInterface> = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ login, register, logout, isAuthenticated, error: registerError || error, loading: registerLoading || loading }}>
+    <AuthContext.Provider
+      value={{ login, register, logout, isAuthenticated, error: registerError || error, loading: registerLoading || loading }}
+    >
       {children}
     </AuthContext.Provider>
   );

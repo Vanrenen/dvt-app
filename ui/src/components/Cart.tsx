@@ -1,11 +1,17 @@
-import { useState } from "react";
-import { Box, Button, Container, Skeleton, Typography } from "@mui/material";
+import { useState } from 'react';
+import {
+  Box,
+  Button,
+  Container,
+  Skeleton,
+  Typography,
+} from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import CheckoutModal from "./Modals/CheckoutModal";
-import Underline from "./General/Underline";
-import { Product } from "../interfaces/productInterfaces";
-import { currencyFormatter } from "../utils/currencyUtils";
-import QuantitySelector from "./General/QuantitySelector";
+import CheckoutModal from './Modals/CheckoutModal';
+import Underline from './General/Underline';
+import { Product } from '../interfaces/productInterfaces';
+import { currencyFormatter } from '../utils/currencyUtils';
+import QuantitySelector from './General/QuantitySelector';
 
 const Cart = (props: { toggleDrawer: (arg0: boolean) => void; }) => {
   const [ openCheckout, setOpenCheckout ] = useState(false);
@@ -190,6 +196,7 @@ const Cart = (props: { toggleDrawer: (arg0: boolean) => void; }) => {
             margin: '20px',
             borderBottom: '1px solid',
             paddingBottom: '5px',
+            height: '150px',
           }}
         >
           {item.image ? (
@@ -205,11 +212,15 @@ const Cart = (props: { toggleDrawer: (arg0: boolean) => void; }) => {
               }}
             />
           ) : (
-            <Skeleton variant="rectangular" width='100px' height='100px' />
+            <Skeleton
+              variant='rectangular'
+              width='100px'
+              height='100px'
+            />
           )}
           <Box sx={{
             display: 'inline-block',
-            width: '500px',
+            width: '450px',
             verticalAlign: 'top',
             float: 'right'
           }}>
@@ -220,7 +231,10 @@ const Cart = (props: { toggleDrawer: (arg0: boolean) => void; }) => {
                 textAlign: 'right',
                 display: 'block',
                 fontWeight: '900',
-                lineHeight: '25px'
+                lineHeight: '25px',
+                textOverflow: 'ellipsis',
+                overflow: 'hidden',
+                whiteSpace: 'nowrap',
               }}
             >
               {item.title}

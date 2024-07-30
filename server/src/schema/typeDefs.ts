@@ -31,7 +31,7 @@ export const typeDefs = gql`
     products: [Product!]
     product(id: String!): Product
     productsCategories: [String]
-    productsCategory(category: String!): [String]
+    productsCategory(category: String!): [Product!]
     userCart(id: String!): [Cart]
   }
 

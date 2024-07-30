@@ -1,4 +1,9 @@
-import { ImageList, ImageListItem, ImageListItemBar, Skeleton } from '@mui/material';
+import {
+  ImageList,
+  ImageListItem,
+  ImageListItemBar,
+  Skeleton,
+} from '@mui/material';
 import { Product } from '../interfaces/productInterfaces';
 import { useNavigate } from 'react-router-dom';
 import { currencyFormatter } from '../utils/currencyUtils';
@@ -9,8 +14,6 @@ const ProductList = (props: { products: Product[]; }) => {
   const imageClicked = (id: string) => {
     navigate(`/product/${id}`)
   };
-
-  console.log(props.products);
 
   return (
     <ImageList sx={{ width: '100%', height: '100%' }} cols={3}>
@@ -38,7 +41,11 @@ const ProductList = (props: { products: Product[]; }) => {
               height='465px'
             />
           ) : (
-            <Skeleton variant="rectangular" width='325px' height='465px' />
+            <Skeleton
+              variant='rectangular'
+              width='325px'
+              height='465px'
+            />
           )}
           <ImageListItemBar
             title={item.title}

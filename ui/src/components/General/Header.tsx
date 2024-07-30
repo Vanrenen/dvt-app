@@ -1,11 +1,20 @@
-import { useState } from "react";
-import { AppBar, Box, Button, Drawer, Toolbar, Typography } from "@mui/material";
+import { useState } from 'react';
+import {
+  AppBar,
+  Box,
+  Button,
+  Drawer, 
+  Toolbar,
+  Typography,
+} from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { useNavigate } from 'react-router-dom';
-import { isProductsPage } from "../../utils/productUtils";
-import Cart from "../Cart";
+import { isProductsPage } from '../../utils/productUtils';
+import Cart from '../Cart';
+import { useAuth } from '../../context/AuthContext';
 
 const Header = () => {
+  const { logout } = useAuth();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
@@ -15,7 +24,7 @@ const Header = () => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-    <AppBar position="static">
+    <AppBar position='static'>
       <Toolbar>
         <Box sx={{width: '25px'}}>
           {!isProductsPage() && (
@@ -24,13 +33,18 @@ const Header = () => {
             </Box>
           )}
         </Box>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+        <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
           Welcome
         </Typography>
-        <Button color="inherit" onClick={toggleDrawer(true)}>Cart</Button>
+        <Button color='inherit' onClick={logout}>Logout</Button>
+        <Button color='inherit' onClick={toggleDrawer(true)}>Cart</Button>
       </Toolbar>
     </AppBar>
-    <Drawer open={open} onClose={toggleDrawer(false)} anchor='right'>
+    <Drawer
+      open={open}
+      onClose={toggleDrawer(false)}
+      anchor='right'
+    >
       <Cart toggleDrawer={setOpen} />
     </Drawer>
   </Box>

@@ -1,5 +1,5 @@
-import { Product } from "./productInterfaces";
-import { Cart } from "./cartInterfaces";
+import { Product } from './productInterfaces';
+import { Cart } from './cartInterfaces';
 
 export interface UseFetchProductsResult {
   loading: boolean;
@@ -17,6 +17,26 @@ export interface UseFetchProductResult {
   getProduct: (id: string) => Promise<Product | null>;
   data: {
     product: Product | null
+  } | null;
+};
+
+export interface UseFetchProductCategoriesResult {
+  loading: boolean;
+  error: string | null;
+  getProductsCategories: () => Promise<[string] | null>;
+  fetchedCategories: {
+    [x: string]: any;
+    productsCategories: [string] | null
+  } | null;
+};
+
+export interface UseFetchuseFetchProductCategoryResult {
+  fetchedProductCategoryLoading: boolean;
+  fetchedProductCategoryError: string | null;
+  getProductsCategory: (category: string) => Promise<[Product] | null>;
+  fetchedProductCategory: {
+    [x: string]: any;
+    productsCategory: [Product] | null
   } | null;
 };
 
