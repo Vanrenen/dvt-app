@@ -6,12 +6,12 @@ import {
   Skeleton,
   Typography,
 } from '@mui/material';
-import { useCart } from '../context/CartContext';
+import { useCart } from 'context/CartContext';
 import CloseIcon from '@mui/icons-material/Close';
-import CheckoutModal from './modals/CheckoutModal';
+import CheckoutModal from 'components/modals/CheckoutModal';
 import Underline from './general/Underline';
-import { CartItem } from '../interfaces/productInterfaces';
-import { currencyFormatter } from '../utils/currencyUtils';
+import { CartItem } from 'interfaces/productInterfaces';
+import { currencyFormatter } from 'utils/currencyUtils';
 
 const SideCart = (props: { toggleDrawer: (arg0: boolean) => void; }) => {
   const [ openCheckout, setOpenCheckout ] = useState(false);

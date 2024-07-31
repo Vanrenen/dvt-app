@@ -4,9 +4,9 @@ import {
   ImageListItemBar,
   Skeleton,
 } from '@mui/material';
-import { Product } from '../interfaces/productInterfaces';
 import { useNavigate } from 'react-router-dom';
-import { currencyFormatter } from '../utils/currencyUtils';
+import { Product } from 'interfaces/productInterfaces';
+import { currencyFormatter } from 'utils/currencyUtils';
 
 const ProductList = (props: { products: Product[]; }) => {
   const navigate = useNavigate();

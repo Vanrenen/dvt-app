@@ -4,8 +4,8 @@ import {
   useState,
   useContext,
 } from 'react';
-import { CartItem } from '../interfaces/productInterfaces';
-import { CartContextInterface, CartContextType } from '../interfaces/contextInterfaces';
+import { CartItem } from 'interfaces/productInterfaces';
+import { CartContextInterface, CartContextType } from 'interfaces/contextInterfaces';
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 

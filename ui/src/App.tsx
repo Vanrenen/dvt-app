@@ -1,10 +1,10 @@
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import RegisterForm from './components/RegisterForm';
-import LoginForm from './components/LoginForm';
-import ProductsPage from './pages/ProductsPage';
-import ProductPage from './pages/ProductPage';
-import { AuthProvider, useAuth } from './context/AuthContext';
-import { CartProvider } from './context/CartContext';
+import RegisterForm from 'components/RegisterForm';
+import LoginForm from 'components/LoginForm';
+import ProductsPage from 'pages/ProductsPage';
+import ProductPage from 'pages/ProductPage';
+import { AuthProvider, useAuth } from 'context/AuthContext';
+import { CartProvider } from 'context/CartContext';
 
 const App = () => {
   return (

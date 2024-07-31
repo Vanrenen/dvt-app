@@ -6,9 +6,9 @@ import {
   useCallback,
   useEffect,
 } from 'react';
-import useLogin from '../hooks/useLogin';
-import useRegister from '../hooks/useRegister';
-import { AuthContetInterface, AuthContextType } from '../interfaces/contextInterfaces';
+import useLogin from 'hooks/useLogin';
+import useRegister from 'hooks/useRegister';
+import { AuthContetInterface, AuthContextType } from 'interfaces/contextInterfaces';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 

@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import BasicModal from './Modal';
+import BasicModal from 'components/modals/Modal';
 
 const CheckoutModal = (
   props: {

@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
-import useGraphQL from './useGraphql';
-import { UseRegisterResult } from '../interfaces/hookInterfaces';
+import useGraphQL from 'hooks/useGraphql';
+import { UseRegisterResult } from 'interfaces/hookInterfaces';
 
 
 const useRegister = (): UseRegisterResult => {

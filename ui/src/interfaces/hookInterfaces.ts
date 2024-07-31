@@ -1,5 +1,5 @@
-import { Product } from './productInterfaces';
-import { Cart } from './cartInterfaces';
+import { Product } from 'interfaces/productInterfaces';
+import { Cart } from 'interfaces/cartInterfaces';
 
 export interface GraphQLResponse<T> {
   data?: T;

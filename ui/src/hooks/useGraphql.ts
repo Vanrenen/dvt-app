@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { GraphQLResponse } from '../interfaces/hookInterfaces';
+import { GraphQLResponse } from 'interfaces/hookInterfaces';
 
 const useGraphQL = <T>(endpoint: string | undefined) => {
   const [loading, setLoading] = useState(false);

@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
+import { Box, Container } from '@mui/material';
 import {
   useFetchCategories,
   useFetchProductCategory,
   useFetchProducts,
-} from '../hooks/useProducts';
-import { Product } from '../interfaces/productInterfaces';
-import ProductList from '../components/ProductList';
-import Loading from '../components/general/Loading';
-import { Box, Container } from '@mui/material';
-import ErrorModal from '../components/modals/ErrorModal';
-import Header from '../components/general/Header';
-import Categories from '../components/Categories';
+} from 'hooks/useProducts';
+import { Product } from 'interfaces/productInterfaces';
+import ProductList from 'components/ProductList';
+import Loading from 'components/general/Loading';
+import ErrorModal from 'components/modals/ErrorModal';
+import Header from 'components/general/Header';
+import Categories from 'components/Categories';
 
 const WelcomePage = () => {
   const { loading, error, getProducts, data } = useFetchProducts();

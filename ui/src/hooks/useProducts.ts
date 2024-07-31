@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
-import useGraphQL from './useGraphql';
-import { Product } from '../interfaces/productInterfaces';
+import useGraphQL from 'hooks/useGraphql';
+import { Product } from 'interfaces/productInterfaces';
 import {
   UseFetchProductsResult,
   UseFetchProductResult,

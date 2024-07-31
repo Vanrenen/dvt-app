@@ -3,15 +3,15 @@ import {
   useState,
   ChangeEvent,
 } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   TextField,
   Button,
   Typography,
 } from '@mui/material';
-import { useAuth } from '../context/AuthContext';
-import FormContainer from './general/FormContainer';
-import { useNavigate } from 'react-router-dom';
-import Loading from './general/Loading';
+import { useAuth } from 'context/AuthContext';
+import FormContainer from 'components/general/FormContainer';
+import Loading from 'components/general/Loading';
 
 const LoginForm = () => {
   const { login, isAuthenticated, error, loading } = useAuth();

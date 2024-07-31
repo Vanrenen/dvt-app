@@ -1,5 +1,5 @@
-import { ReactNode } from "react";
-import { CartItem } from "./productInterfaces";
+import { ReactNode } from 'react';
+import { CartItem } from 'interfaces/productInterfaces';
 
 export interface AuthContextType {
   login: (username: string, password: string) => Promise<string | null>;

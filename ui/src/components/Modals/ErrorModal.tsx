@@ -1,5 +1,9 @@
-import { useState, useEffect, useRef } from 'react';
-import BasicModal from './Modal';
+import {
+  useState,
+  useEffect,
+  useRef,
+} from 'react';
+import BasicModal from 'components/modals/Modal';
 
 interface ErrorModalInterface {
   error: string | null;

@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
-import useGraphQL from './useGraphql';
-import { UseFetchUserCartResult } from '../interfaces/hookInterfaces';
-import { Cart } from '../interfaces/cartInterfaces';
+import useGraphQL from 'hooks/useGraphql';
+import { UseFetchUserCartResult } from 'interfaces/hookInterfaces';
+import { Cart } from 'interfaces/cartInterfaces';
 
 
 export const useGetUserCart = (): UseFetchUserCartResult => {

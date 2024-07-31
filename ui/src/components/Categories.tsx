@@ -1,6 +1,6 @@
 import { Box, Button } from '@mui/material';
-import { Product } from '../interfaces/productInterfaces';
-import Loading from './general/Loading';
+import { Product } from 'interfaces/productInterfaces';
+import Loading from 'components/general/Loading';
 
 const Categories = (props: {
   setProducts(arg0: [Product] | []): unknown;

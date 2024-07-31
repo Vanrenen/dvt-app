@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom';
-import App from './App';
+import App from 'App';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Box, Theme } from '@mui/material';
