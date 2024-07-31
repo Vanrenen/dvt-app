@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { SetStateAction, useEffect, useState } from 'react';
 import { useFetchProduct } from '../hooks/useProducts';
 import { fetchProductIdFromUrl } from '../utils/productUtils';
 import {
@@ -9,8 +9,9 @@ import {
   ListItem,
   Typography,
 } from '@mui/material';
+import { useCart } from '../context/CartContext';
 import Loading from '../components/General/Loading';
-import { Product } from '../interfaces/productInterfaces';
+import { CartItem, Product } from '../interfaces/productInterfaces';
 import { currencyFormatter } from '../utils/currencyUtils';
 import ErrorModal from '../components/Modals/ErrorModal';
 import Header from '../components/General/Header';
@@ -21,6 +22,8 @@ const ProductPage = () => {
   const { loading, error, getProduct, data } = useFetchProduct();
   const [ id, setId ] = useState('')
   const [ product, setProduct ] = useState<Product>();
+  const { cart, setCart } = useCart();
+  const [ quantity, setQuantity ] = useState('1');
 
   useEffect(() => {
     getProduct(id)
@@ -35,6 +38,28 @@ const ProductPage = () => {
       setProduct(data.product);
     }
   }, [data]);
+
+  const addToCart = (item: Product) => {
+    if (!cart.find(cartItem => cartItem.id === item.id)) {
+      const quantityAdded = {
+        ...item,
+        quantity: parseInt(quantity) || 1
+      }
+
+      const newCart: CartItem[] = cart;
+      newCart.push(quantityAdded)
+      setCart(newCart);
+
+    } else {
+    cart.find(cartItem => {
+      if (cartItem.id === item.id) {
+        cartItem.quantity ? cartItem.quantity++ : cartItem.quantity = 0;
+      }
+    });
+    setCart(cart)
+  }
+    
+  };
 
   return (
     <Box sx={{height: '100vh'}}>
@@ -56,7 +81,7 @@ const ProductPage = () => {
         <Container sx={{
           marginTop: '25px',
         }}>
-          <Typography variant='h3'>{product?.title}</Typography>
+          <Typography variant='h3'>{product.title}</Typography>
           <Box sx={{
             display: 'flex',
             marginBottom: '25px',
@@ -76,12 +101,13 @@ const ProductPage = () => {
               </Box>
               <Box>
                 <Typography variant='h4'>Price: {currencyFormatter(product.price)}</Typography>
-                <QuantitySelector />
+                <QuantitySelector quantity={quantity} setQuantity={setQuantity} />
                 <Button
                   variant='contained'
                   sx={{
                     display: 'block',
                   }}
+                  onClick={() => addToCart(product)}
                 >
                   Add to cart
                 </Button>

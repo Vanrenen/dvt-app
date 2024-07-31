@@ -17,7 +17,7 @@ const ProductItem = (props: { product: Product }) => (
     />
     <Box>
       <Typography variant='h6'>Price: {currencyFormatter(props.product.price)}</Typography>
-      <QuantitySelector />
+      <QuantitySelector quantity='1' />
       <Button variant='contained'>Add to cart</Button>
     </Box>
   </Box>

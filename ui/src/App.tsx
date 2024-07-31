@@ -4,19 +4,22 @@ import LoginForm from './components/LoginForm';
 import ProductsPage from './pages/ProductsPage';
 import ProductPage from './pages/ProductPage';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { CartProvider } from './context/CartContext';
 
 const App = () => {
   return (
     <AuthProvider>
-      <Router>
-        <Routes>
-          <Route path="/register" element={<RegisterForm />} />
-          <Route path="/login" element={<LoginForm />} />
-          <Route path="/" element={<LoginForm />} />
-          <Route path="*" element={<PrivateRoute />} />
-          <Route path="/product/*" element={ <ProductPage />} />
-        </Routes>
-      </Router>
+      <CartProvider>
+        <Router>
+          <Routes>
+            <Route path="/register" element={<RegisterForm />} />
+            <Route path="/login" element={<LoginForm />} />
+            <Route path="/" element={<LoginForm />} />
+            <Route path="*" element={<PrivateRoute />} />
+            <Route path="/product/*" element={ <ProductPage />} />
+          </Routes>
+        </Router>
+      </CartProvider>
     </AuthProvider>
   );
 };

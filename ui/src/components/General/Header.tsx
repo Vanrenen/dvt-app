@@ -10,7 +10,7 @@ import {
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { useNavigate } from 'react-router-dom';
 import { isProductsPage } from '../../utils/productUtils';
-import Cart from '../Cart';
+import SideCart from '../Cart';
 import { useAuth } from '../../context/AuthContext';
 
 const Header = () => {
@@ -45,7 +45,7 @@ const Header = () => {
       onClose={toggleDrawer(false)}
       anchor='right'
     >
-      <Cart toggleDrawer={setOpen} />
+      <SideCart toggleDrawer={setOpen} />
     </Drawer>
   </Box>
   )

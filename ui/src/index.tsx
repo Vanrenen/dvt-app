@@ -2,7 +2,7 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { Box, Container, Theme } from '@mui/material';
+import { Box, Theme } from '@mui/material';
 
 declare module '@mui/styles/defaultTheme' {
   interface DefaultTheme extends Theme { }
