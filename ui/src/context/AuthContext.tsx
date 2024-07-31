@@ -4,28 +4,15 @@ import {
   useState,
   useContext,
   useCallback,
-  ReactNode,
   useEffect,
 } from 'react';
 import useLogin from '../hooks/useLogin';
 import useRegister from '../hooks/useRegister';
-
-interface AuthContextType {
-  login: (username: string, password: string) => Promise<string | null>;
-  register: (username: string, password: string) => Promise<string | null>;
-  logout: () => void;
-  isAuthenticated: boolean;
-  error: string | null;
-  loading: boolean;
-}
-
-interface AuthInterface {
-  children: ReactNode;
-};
+import { AuthContetInterface, AuthContextType } from '../interfaces/contextInterfaces';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider: FC<AuthInterface> = ({ children }) => {
+export const AuthProvider: FC<AuthContetInterface> = ({ children }) => {
   const { loading, error, login, data } = useLogin();
   const { register, registerLoading, registerError, registerData } = useRegister();
   const [token, setToken] = useState<string | null>(null);

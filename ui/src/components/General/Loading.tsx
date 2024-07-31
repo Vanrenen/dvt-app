@@ -31,17 +31,19 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Loading = () => {
+const Loading = (props: { noOopaLoompas?: boolean; }) => {
   const classes = useStyles();
 
   return (
     <Container className={classes.container}>
+      {!props.noOopaLoompas && (
       <Typography
         variant='h4'
         sx={{textAlign: 'center'}}
       >
         The Oompa Loompa's are busy fetching your data!!
       </Typography>
+      )}
       <Box className={classes.loader} />
     </Container>
   )

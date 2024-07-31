@@ -3,18 +3,9 @@ import {
   createContext,
   useState,
   useContext,
-  ReactNode,
 } from 'react';
 import { CartItem } from '../interfaces/productInterfaces';
-
-interface CartContextType {
-  cart: CartItem[] | [];
-  setCart: (cart: CartItem[] | []) => void;
-}
-
-interface CartContextInterface {
-  children: ReactNode;
-};
+import { CartContextInterface, CartContextType } from '../interfaces/contextInterfaces';
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 

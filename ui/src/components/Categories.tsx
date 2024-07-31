@@ -1,5 +1,6 @@
 import { Box, Button } from '@mui/material';
 import { Product } from '../interfaces/productInterfaces';
+import Loading from './general/Loading';
 
 const Categories = (props: {
   setProducts(arg0: [Product] | []): unknown;
@@ -17,24 +18,32 @@ const Categories = (props: {
     props.getProducts();
   };
 
+  console.log(props.categories)
+
   return (
     <Box>
-      <Button
-        size='medium'
-        key={'allCategores'}
-        onClick={() => allCategoriesClicked()}
-      >
-        All
-      </Button>
-      {props?.categories?.map((item: string) => (
+      { !props.categories ? (
+        <Loading noOopaLoompas />
+      ) : (
+      <Box>
         <Button
-        size='medium'
-        key={item}
-        onClick={() => categoryClicked(item)}
-      >
-        {item}
-      </Button>
-      ))}
+          size='medium'
+          key={'allCategores'}
+          onClick={() => allCategoriesClicked()}
+        >
+          All
+        </Button>
+        {props?.categories?.map((item: string) => (
+          <Button
+          size='medium'
+          key={item}
+          onClick={() => categoryClicked(item)}
+        >
+          {item}
+        </Button>
+        ))}
+      </Box>
+      )}
     </Box>
   )
 };

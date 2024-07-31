@@ -1,6 +1,6 @@
-import { SetStateAction, useEffect, useState } from 'react';
-import { useFetchProduct } from '../hooks/useProducts';
-import { fetchProductIdFromUrl } from '../utils/productUtils';
+import { useEffect, useState } from 'react';
+import { useFetchProduct } from 'hooks/useProducts';
+import { fetchProductIdFromUrl } from 'utils/productUtils';
 import {
   Box,
   Button,
@@ -9,14 +9,14 @@ import {
   ListItem,
   Typography,
 } from '@mui/material';
-import { useCart } from '../context/CartContext';
-import Loading from '../components/General/Loading';
-import { CartItem, Product } from '../interfaces/productInterfaces';
-import { currencyFormatter } from '../utils/currencyUtils';
-import ErrorModal from '../components/Modals/ErrorModal';
-import Header from '../components/General/Header';
-import QuantitySelector from '../components/General/QuantitySelector';
-import Underline from '../components/General/Underline';
+import { useCart } from 'context/CartContext';
+import Loading from 'components/general/Loading';
+import { CartItem, Product } from 'interfaces/productInterfaces';
+import { currencyFormatter } from 'utils/currencyUtils';
+import ErrorModal from 'components/modals/ErrorModal';
+import Header from 'components/general/Header';
+import QuantitySelector from 'components/general/QuantitySelector';
+import Underline from 'components/general/Underline';
 
 const ProductPage = () => {
   const { loading, error, getProduct, data } = useFetchProduct();
@@ -85,10 +85,11 @@ const ProductPage = () => {
           <Box sx={{
             display: 'flex',
             marginBottom: '25px',
+            marginTop: '50px'
           }}>
             <Box sx={{
               borderRadius: '25px',
-              marginRight: '25px',
+              marginRight: '50px',
               overflow: 'hidden'
 
             }}>
@@ -99,9 +100,23 @@ const ProductPage = () => {
                   loading='lazy'
                 />
               </Box>
-              <Box>
+              <Box padding={'25px'}>
+              <Typography variant='h5' sx={{marginTop: '25px'}}>
+                  We offer:
+                </Typography>
+                <List>
+                  <ListItem>Free delivery</ListItem>
+                  <ListItem>Easy returns</ListItem>
+                  <ListItem>Unlimited warranty</ListItem>
+                </List>
                 <Typography variant='h4'>Price: {currencyFormatter(product.price)}</Typography>
+                <Box sx={{
+                  display: 'flex',
+                  marginTop: '25px',
+                  marginBottom: '15px'
+                }}>
                 <QuantitySelector quantity={quantity} setQuantity={setQuantity} />
+                </Box>
                 <Button
                   variant='contained'
                   sx={{
@@ -111,16 +126,17 @@ const ProductPage = () => {
                 >
                   Add to cart
                 </Button>
-                <List>
-                  <ListItem>Free delivery</ListItem>
-                  <ListItem>Easy returns</ListItem>
-                  <ListItem>Unlimited warranty</ListItem>
-                </List>
               </Box>
             </Box>
             <Underline />
-            <Typography variant='h5'>About</Typography>
-            <Typography variant='body1'>{product.description}</Typography>
+            <Box sx={{
+              width: '75%',
+              margin: '0 auto',
+              paddingTop: '50px'
+            }}>
+              <Typography variant='h5'>About</Typography>
+              <Typography variant='body1' marginTop={'20px'}>{product.description}</Typography>
+            </Box>
           </Container>
       )}
     </Box>

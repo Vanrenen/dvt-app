@@ -6,10 +6,10 @@ import {
 } from '../hooks/useProducts';
 import { Product } from '../interfaces/productInterfaces';
 import ProductList from '../components/ProductList';
-import Loading from '../components/General/Loading';
+import Loading from '../components/general/Loading';
 import { Box, Container } from '@mui/material';
-import ErrorModal from '../components/Modals/ErrorModal';
-import Header from '../components/General/Header';
+import ErrorModal from '../components/modals/ErrorModal';
+import Header from '../components/general/Header';
 import Categories from '../components/Categories';
 
 const WelcomePage = () => {

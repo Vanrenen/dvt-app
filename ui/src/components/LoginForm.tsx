@@ -9,9 +9,9 @@ import {
   Typography,
 } from '@mui/material';
 import { useAuth } from '../context/AuthContext';
-import FormContainer from './General/FormContainer';
+import FormContainer from './general/FormContainer';
 import { useNavigate } from 'react-router-dom';
-import Loading from './General/Loading';
+import Loading from './general/Loading';
 
 const LoginForm = () => {
   const { login, isAuthenticated, error, loading } = useAuth();

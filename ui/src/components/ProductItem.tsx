@@ -5,7 +5,7 @@ import {
 } from '@mui/material';
 import { Product } from '../interfaces/productInterfaces';
 import { currencyFormatter } from '../utils/currencyUtils';
-import QuantitySelector from './General/QuantitySelector';
+import QuantitySelector from './general/QuantitySelector';
 
 // TODO: incorporate as a memoized item
 const ProductItem = (props: { product: Product }) => (

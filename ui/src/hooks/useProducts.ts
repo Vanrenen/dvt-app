@@ -1,7 +1,12 @@
 import { useCallback } from 'react';
 import useGraphQL from './useGraphql';
 import { Product } from '../interfaces/productInterfaces';
-import { UseFetchProductsResult, UseFetchProductResult, UseFetchProductCategoriesResult, UseFetchuseFetchProductCategoryResult } from '../interfaces/hookInterfaces';
+import {
+  UseFetchProductsResult,
+  UseFetchProductResult,
+  UseFetchProductCategoriesResult,
+  UseFetchuseFetchProductCategoryResult,
+} from '../interfaces/hookInterfaces';
 
 export const useFetchProducts = (): UseFetchProductsResult => {
   const { loading, error, data, query } = useGraphQL<{ products: [Product]}>(process.env.REACT_APP_GRAPHQL_API);

@@ -8,8 +8,8 @@ import {
 } from '@mui/material';
 import { useCart } from '../context/CartContext';
 import CloseIcon from '@mui/icons-material/Close';
-import CheckoutModal from './Modals/CheckoutModal';
-import Underline from './General/Underline';
+import CheckoutModal from './modals/CheckoutModal';
+import Underline from './general/Underline';
 import { CartItem } from '../interfaces/productInterfaces';
 import { currencyFormatter } from '../utils/currencyUtils';
 

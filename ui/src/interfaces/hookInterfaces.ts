@@ -1,6 +1,11 @@
 import { Product } from './productInterfaces';
 import { Cart } from './cartInterfaces';
 
+export interface GraphQLResponse<T> {
+  data?: T;
+  errors?: any;
+};
+
 export interface UseFetchProductsResult {
   loading: boolean;
   error: string | null;
