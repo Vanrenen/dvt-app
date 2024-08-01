@@ -14,13 +14,6 @@ export const typeDefs = gql`
     image: String
   }
 
-  type Cart {
-    id: String
-    userId: String
-    date: String
-    products: [Product]
-  }
-
   type Token {
     token: String!
   }
@@ -32,7 +25,6 @@ export const typeDefs = gql`
     product(id: String!): Product
     productsCategories: [String]
     productsCategory(category: String!): [Product!]
-    userCart(id: String!): [Cart]
   }
 
   type Mutation {
