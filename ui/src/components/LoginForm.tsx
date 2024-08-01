@@ -8,6 +8,7 @@ import {
   TextField,
   Button,
   Typography,
+  Container,
 } from '@mui/material';
 import { useAuth } from 'context/AuthContext';
 import FormContainer from 'components/general/FormContainer';
@@ -34,28 +35,30 @@ const LoginForm = () => {
 
   return (
     <FormContainer>
-      <Typography variant='h1' gutterBottom>
-        Login
-      </Typography>
-      <TextField
-        label='Username'
-        name='username'
-        value={formData.username}
-        onChange={handleChange}
-        margin='normal'
-        fullWidth
-        required
-      />
-      <TextField
-        label='Password'
-        name='password'
-        type='password'
-        value={formData.password}
-        onChange={handleChange}
-        margin='normal'
-        fullWidth
-        required
-      />
+      <Container>
+        <Typography variant='h1' gutterBottom>
+          Login
+        </Typography>
+        <TextField
+          label='Username'
+          name='username'
+          value={formData.username}
+          onChange={handleChange}
+          margin='normal'
+          fullWidth
+          required
+        />
+        <TextField
+          label='Password'
+          name='password'
+          type='password'
+          value={formData.password}
+          onChange={handleChange}
+          margin='normal'
+          fullWidth
+          required
+        />
+      </Container>
       {error && (
         <Typography variant='body1' color='error' gutterBottom>
           {error}
@@ -69,7 +72,7 @@ const LoginForm = () => {
         disabled={loading}
         fullWidth
       >
-        {loading ? <Loading /> : 'Login'}
+        {loading ? <Loading noOopaLoompas /> : 'Login'}
       </Button>
       </Typography>
       <Button
@@ -79,7 +82,7 @@ const LoginForm = () => {
           disabled={loading}
           fullWidth
         >
-          {loading ? <Loading /> : 'Register'}
+          {loading ? <Loading noOopaLoompas /> : 'Register'}
         </Button>
     </FormContainer>
   );

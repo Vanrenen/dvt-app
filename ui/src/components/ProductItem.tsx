@@ -1,26 +1,65 @@
+import { memo } from 'react';
 import {
   Box,
-  Button,
-  Typography,
+  ImageListItem,
+  ImageListItemBar,
+  Skeleton,
 } from '@mui/material';
 import { Product } from 'interfaces/productInterfaces';
 import { currencyFormatter } from 'utils/currencyUtils';
-import QuantitySelector from 'components/general/QuantitySelector';
 
-// TODO: incorporate as a memoized item
-const ProductItem = (props: { product: Product }) => (
-  <Box sx={{display: 'flex'}}>
-    <img
-      srcSet={`${props.product.image}?w=248&fit=crop&auto=format&dpr=2 2x`}
-      src={`${props.product?.image}?w=248&fit=crop&auto=format`}
-      alt={props.product.title}
+const ProductItem = (props: {
+  imageClicked(id: string): unknown; product: Product 
+}) => (
+  <ImageListItem
+    key={`product-${props.product.title}`}
+    sx={{
+      margin: '20px',
+      cursor: 'pointer',
+      borderRadius: '25px',
+      overflow: 'hidden',
+      boxShadow: '10px 10px #888'
+    }}
+    onClick={() => {
+      props.imageClicked(props.product.id);
+    }}
+  >
+    {props.product.image ? (
+      <Box sx={{
+        width: '350px',
+        height: '450px',
+        background: '#fff',
+      }}>
+        <img
+          srcSet={`${props.product.image}?w=350&fit=crop&auto=format&dpr=2 2x`}
+          src={`${props.product.image}?w=350&fit=crop&auto=format&dpr=2 2x`}
+          alt={props.product.title}
+          loading='lazy'
+          style={{
+            width: '350px',
+            height: '450px',
+          }}
+          
+        />
+      </Box>
+    ) : (
+      <Box sx={{
+        width: '350px',
+        height: '450px',
+        background: '#fff',
+      }}>
+      <Skeleton
+        variant='rectangular'
+        width='350px'
+        height='450px'
+      />
+      </Box>
+    )}
+    <ImageListItemBar
+      title={props.product.title}
+      subtitle={<span>{currencyFormatter(props.product.price)}</span>}
     />
-    <Box>
-      <Typography variant='h6'>Price: {currencyFormatter(props.product.price)}</Typography>
-      <QuantitySelector quantity='1' />
-      <Button variant='contained'>Add to cart</Button>
-    </Box>
-  </Box>
+  </ImageListItem>
 );
 
-export default ProductItem;
+export default memo(ProductItem);

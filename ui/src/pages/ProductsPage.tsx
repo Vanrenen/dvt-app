@@ -23,6 +23,8 @@ const WelcomePage = () => {
   useEffect(() => {
     getProducts();
     getProductsCategories();
+    // This should oly be called once during compile
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

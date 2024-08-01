@@ -9,9 +9,9 @@ import {
 } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { useNavigate } from 'react-router-dom';
-import { isProductsPage } from 'utils/productUtils';
 import SideCart from 'components/Cart';
 import { useAuth } from 'context/AuthContext';
+import { isProductsPage } from 'utils/productUtils';
 
 const Header = () => {
   const { logout } = useAuth();

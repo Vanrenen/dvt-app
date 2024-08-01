@@ -3,7 +3,7 @@ import { Cart } from 'interfaces/cartInterfaces';
 
 export interface GraphQLResponse<T> {
   data?: T;
-  errors?: any;
+  errors?: [{message: string}];
 };
 
 export interface UseFetchProductsResult {

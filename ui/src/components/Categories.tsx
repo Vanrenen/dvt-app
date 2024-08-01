@@ -18,8 +18,6 @@ const Categories = (props: {
     props.getProducts();
   };
 
-  console.log(props.categories)
-
   return (
     <Box>
       { !props.categories ? (

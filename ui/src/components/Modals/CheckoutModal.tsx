@@ -10,7 +10,7 @@ const CheckoutModal = (
 
   useEffect(() => {
     props.setOpen(false);
-  }, [props.setOpen])
+  }, [props, props.setOpen])
 
   return (
     <BasicModal

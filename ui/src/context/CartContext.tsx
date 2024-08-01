@@ -7,7 +7,7 @@ import {
 import { CartItem } from 'interfaces/productInterfaces';
 import { CartContextInterface, CartContextType } from 'interfaces/contextInterfaces';
 
-const CartContext = createContext<CartContextType | undefined>(undefined);
+export const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: FC<CartContextInterface> = ({ children }) => {
   const [ cart, setCart ] = useState<CartItem[] | []>([]);

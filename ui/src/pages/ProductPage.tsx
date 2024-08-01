@@ -1,6 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useFetchProduct } from 'hooks/useProducts';
-import { fetchProductIdFromUrl } from 'utils/productUtils';
 import {
   Box,
   Button,
@@ -10,9 +8,11 @@ import {
   Typography,
 } from '@mui/material';
 import { useCart } from 'context/CartContext';
-import Loading from 'components/general/Loading';
-import { CartItem, Product } from 'interfaces/productInterfaces';
+import { useFetchProduct } from 'hooks/useProducts';
+import { fetchProductIdFromUrl } from 'utils/productUtils';
 import { currencyFormatter } from 'utils/currencyUtils';
+import { CartItem, Product } from 'interfaces/productInterfaces';
+import Loading from 'components/general/Loading';
 import ErrorModal from 'components/modals/ErrorModal';
 import Header from 'components/general/Header';
 import QuantitySelector from 'components/general/QuantitySelector';
@@ -27,6 +27,8 @@ const ProductPage = () => {
 
   useEffect(() => {
     getProduct(id)
+    // Adding getProduct as a dependency here will cause an infinite render loop
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   useEffect(() => {
@@ -34,13 +36,13 @@ const ProductPage = () => {
   }, []);
 
   useEffect(() => {
-    if (data?.product) {
+    if (data?.product?.id) {
       setProduct(data.product);
     }
   }, [data]);
 
   const addToCart = (item: Product) => {
-    if (!cart.find(cartItem => cartItem.id === item.id)) {
+    if (!cart.find(cartItem => { return cartItem.id === item.id})) {
       const quantityAdded = {
         ...item,
         quantity: parseInt(quantity) || 1
@@ -51,18 +53,18 @@ const ProductPage = () => {
       setCart(newCart);
 
     } else {
-    cart.find(cartItem => {
-      if (cartItem.id === item.id) {
-        cartItem.quantity ? cartItem.quantity++ : cartItem.quantity = 0;
-      }
-    });
+      for (let i = 0; i < cart.length; i++ ) {
+        if (cart[i].id === item.id) {
+          cart[i].quantity ? cart[i].quantity++ : cart[i].quantity = 0;
+        }
+      };
     setCart(cart)
   }
     
   };
 
   return (
-    <Box sx={{height: '100vh'}}>
+    <Box sx={{height: '100%', minHeight: '100vh'}}>
       <Header />
       {error && !loading && (
         <ErrorModal error={error} />
@@ -90,14 +92,20 @@ const ProductPage = () => {
             <Box sx={{
               borderRadius: '25px',
               marginRight: '50px',
-              overflow: 'hidden'
+              overflow: 'hidden',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              background: '#fff'
 
             }}>
               <img
-                  srcSet={`${product.image}?w=248&fit=crop&auto=format&dpr=2 2x`}
-                  src={`${product?.image}?w=248&fit=crop&auto=format`}
+                  srcSet={`${product.image}?w=350&fit=crop&auto=format&dpr=2 2x`}
+                  src={`${product?.image}`}
                   alt={product.title}
                   loading='lazy'
+                  width={'350px'}
+                  height={'450px'}
                 />
               </Box>
               <Box padding={'25px'}>

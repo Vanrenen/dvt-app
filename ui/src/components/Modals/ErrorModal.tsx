@@ -4,10 +4,7 @@ import {
   useRef,
 } from 'react';
 import BasicModal from 'components/modals/Modal';
-
-interface ErrorModalInterface {
-  error: string | null;
-}
+import { ErrorModalInterface } from 'interfaces/modalInterface';
 
 const ErrorModal = (props: ErrorModalInterface) => {
   const [open, setOpen ] = useState(false);

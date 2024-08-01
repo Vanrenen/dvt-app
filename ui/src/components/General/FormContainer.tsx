@@ -1,4 +1,4 @@
-import {FC, ReactNode} from 'react';
+import { FC, ReactNode } from 'react';
 import { makeStyles } from '@mui/styles';
 import {
   Container,
@@ -7,7 +7,7 @@ import {
 } from '@mui/material';
 
 interface FormInterface {
-  children: ReactNode
+  children?: ReactNode;
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -32,8 +32,8 @@ const FormContainer: FC<FormInterface> = ({ children }) => {
   const classes = useStyles();
 
   return (
-    <Container className={classes.container}>
-      <Paper className={classes.paper}>
+    <Container className={classes.container} role="container">
+      <Paper className={classes.paper} role="paper">
         <Box>
           {children}
         </Box>
